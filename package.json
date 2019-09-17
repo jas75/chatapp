@@ -4,8 +4,10 @@
   "description": "back for chatapp",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npm start && cd client && ng serve"
+    "client-install": "cd client && npm install",
+    "server": "nodemon sever.js",
+    "client": "cd client && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -16,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/jas75/chatapp/issues"
   },
-  "homepage": "https://github.com/jas75/chatapp#readme"
+  "homepage": "https://github.com/jas75/chatapp#readme",
+  "devDependencies": {
+    "concurrently": "^4.1.2"
+  }
 }
