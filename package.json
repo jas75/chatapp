@@ -1,0 +1,19 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "back for chatapp",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jas75/chatapp.git"
+  },
+  "author": "Jason Azoulay",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jas75/chatapp/issues"
+  },
+  "homepage": "https://github.com/jas75/chatapp#readme"
+}
