@@ -4,7 +4,8 @@
   "description": "back for chatapp",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npm start && cd client && ng serve"
   },
   "repository": {
     "type": "git",
