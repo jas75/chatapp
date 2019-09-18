@@ -1,0 +1,19 @@
+.btn-fb {
+    background-color: #3b5998;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.btn-google {
+    background-color: #DB4437;
+    color: white;
+}
+
+.small-text {
+    font-size: 0.8em;
+}
+
+.margin-bottop {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

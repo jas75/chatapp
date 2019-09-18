@@ -19,8 +19,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
       this.loginForm = this.formBuilder.group({
+        email: [],
+        password: []
       });
-
   }
-
 }

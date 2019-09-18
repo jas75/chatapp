@@ -5,4 +5,6 @@
     background: linear-gradient(0deg, rgba(48,138,238,1) 0%, rgba(167,227,238,1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#308aee",endColorstr="#a7e3ee",GradientType=1);
     height: 100vh;
+    font-family: 'Lato', sans-serif;
+    padding: 10px;
 }
