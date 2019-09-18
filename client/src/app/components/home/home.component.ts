@@ -13,6 +13,8 @@ export class HomeComponent implements OnInit {
   loginForm: FormGroup;
   registerForm: FormGroup;
 
+  loggingIn = true;
+
   constructor(
     private formBuilder: FormBuilder
   ) { }
@@ -25,6 +27,10 @@ export class HomeComponent implements OnInit {
   }
   
   submitLoginForm() {
+
+  }
+
+  submitRegisterForm() {
     
   }
 }

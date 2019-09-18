@@ -3,15 +3,101 @@
 
         <div class="col-md-6 offset-md-3">
             <div class="card" style="width: 100%;">
-                <div class="card-body text-center">
+                
+
+                <!-- Register Form -->
+                <div class="card-body" *ngIf="!loggingIn">
+                    
+                    <h2 class="card-title margin-bottop" style="margin-bottom: 30px;">Create an Account</h2>
+
+                    <small>Get started with your free account</small>
+                    <form [formGroup]="registerForm" (ngSubmit)="submitRegisterForm()">
+
+                            <div class="form-group input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                                    </div>
+                                    <input type="email" class="form-control" formControlName="email" aria-describedby="emailHelp" placeholder="Enter email">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Password</label>
+                                <input type="password" class="form-control" formControlName="password" placeholder="Password">
+                            </div>  
+    
+                            <div class="small-text margin-bottop" style="text-align: left;">
+                                <a href="#">
+                                    Forgot password?
+                                </a>
+                            </div>
+                            <div class="form-group form-check" style="text-align: left;">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                <label class="form-check-label" for="exampleCheck1">Remember me</label>
+                            </div>
+    
+                            <button type="submit" class="btn btn-primary btn-lg">Login</button>
+    
+                            
+    
+                            <div class="small-text margin-bottop">
+                                Have an account? <a href="#" (click)="loggingIn = !loggingIn">Log in</a>
+                            </div> 
+    
+                            <div class="row margin-bottop">
+                                <div class="col-md-5">
+                                    <hr>
+                                </div>
+    
+                                <div class="col-md-2">
+                                    <small>OR</small>
+    
+                                </div>
+    
+                                <div class="col-md-5">
+                                    <hr>
+                                </div>
+    
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button class="btn btn-block btn-fb">
+                                            
+                                            <span class="fa fa-facebook"></span> &nbsp; Sign in with Facebook
+                                        
+                                    </button>
+                                </div>    
+                            </div>
+    
+                         
+                            <div class="row">
+                                    <div class="col-md-12">
+                                        <button class="btn btn-block btn-google">
+                                                
+                                                <span class="fa fa-google"></span>  &nbsp; Sign in with Google
+                                            
+                                        </button>
+                                    </div>    
+                                </div>
+                        </form>
+
+                </div>
+
+                <!-- Login form -->
+                <div class="card-body text-center" *ngIf="loggingIn">
                     <h2 class="card-title margin-bottop" style="margin-bottom: 30px;">Log in!</h2>
                     <form [formGroup]="loginForm" (ngSubmit)="submitLoginForm()">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Alias / Email</label>
-                            <input type="email" class="form-control" formControlName="email" aria-describedby="emailHelp" placeholder="Enter email">
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                            </div>
+                            <input type="email" class="form-control" formControlName="email" aria-describedby="emailHelp" placeholder="Alias or Email">
                         </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
+
+                        <div class="form-group input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                                </div>
                             <input type="password" class="form-control" formControlName="password" placeholder="Password">
                         </div>
 
@@ -25,17 +111,25 @@
                             <label class="form-check-label" for="exampleCheck1">Remember me</label>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary btn-lg">Login</button>
 
                         
 
                         <div class="small-text margin-bottop">
-                            Not a member? <a href="#">Sign up now</a>
+                            Not a member? <a href="#" (click)="loggingIn = !loggingIn">Sign up now</a>
                         </div> 
 
                         <div class="row margin-bottop">
-                            <div class="col-md-12">
+                            <div class="col-md-5">
+                                <hr>
+                            </div>
+
+                            <div class="col-md-2">
                                 <small>OR</small>
+
+                            </div>
+
+                            <div class="col-md-5">
                                 <hr>
                             </div>
 
@@ -45,7 +139,7 @@
                             <div class="col-md-12">
                                 <button class="btn btn-block btn-fb">
                                         
-                                        <span class="fa fa-facebook"></span> Sign in with Facebook
+                                        <span class="fa fa-facebook"></span> &nbsp; Sign in with Facebook
                                     
                                 </button>
                             </div>    
@@ -56,7 +150,7 @@
                                 <div class="col-md-12">
                                     <button class="btn btn-block btn-google">
                                             
-                                            <span class="fa fa-google"></span> Sign in with Google
+                                            <span class="fa fa-google"></span>  &nbsp; Sign in with Google
                                         
                                     </button>
                                 </div>    
@@ -66,5 +160,4 @@
             </div>
         </div>
     </div>
-
 </div>
