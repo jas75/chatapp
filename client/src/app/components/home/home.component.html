@@ -6,36 +6,81 @@
                 
 
                 <!-- Register Form -->
-                <div class="card-body" *ngIf="!loggingIn">
+                <div class="card-body text-center" *ngIf="!loggingIn">
                     
-                    <h2 class="card-title margin-bottop" style="margin-bottom: 30px;">Create an Account</h2>
+                    <h2>Create an Account</h2>
 
                     <small>Get started with your free account</small>
+
+                        
+                    <div class="row margin-bottop">
+                        <div class="col-md-12">
+                            <button class="btn btn-block btn-fb">
+                                    
+                                    <span class="fa fa-facebook"></span> &nbsp; Sign in with Facebook
+                                
+                            </button>
+                        </div>    
+                    </div>
+
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn btn-block btn-google">
+                                    
+                                    <span class="fa fa-google"></span>  &nbsp; Sign in with Google
+                                
+                            </button>
+                        </div>    
+                    </div>
+
+                    <div class="row margin-bottop">
+                        <div class="col-md-5">
+                            <hr>
+                        </div>
+
+                        <div class="col-md-2">
+                            <small>OR</small>
+
+                        </div>
+
+                        <div class="col-md-5">
+                            <hr>
+                        </div>
+
+                    </div>
                     <form [formGroup]="registerForm" (ngSubmit)="submitRegisterForm()">
 
                             <div class="form-group input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                                     </div>
-                                    <input type="email" class="form-control" formControlName="email" aria-describedby="emailHelp" placeholder="Enter email">
+                                    <input type="email" class="form-control" formControlName="alias" placeholder="Choose an Alias">
                             </div>
                             
-                            <div class="form-group">
-                                <label for="exampleInputPassword1">Password</label>
-                                <input type="password" class="form-control" formControlName="password" placeholder="Password">
-                            </div>  
-    
-                            <div class="small-text margin-bottop" style="text-align: left;">
-                                <a href="#">
-                                    Forgot password?
-                                </a>
+                            <div class="form-group input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+                                </div>
+                                <input type="email" class="form-control" formControlName="email" placeholder="Email">
+                            </div> 
+
+                            <div class="form-group input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                                </div>
+                                <input type="email" class="form-control" formControlName="password" placeholder="Password">
                             </div>
-                            <div class="form-group form-check" style="text-align: left;">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                <label class="form-check-label" for="exampleCheck1">Remember me</label>
+
+                            <div class="form-group input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                                </div>
+                                <input type="email" class="form-control" formControlName="confPassword" placeholder="Confirm Password">
                             </div>
     
-                            <button type="submit" class="btn btn-primary btn-lg">Login</button>
+    
+                            <button type="submit" class="btn btn-primary btn-lg">Sign up</button>
     
                             
     
@@ -43,42 +88,7 @@
                                 Have an account? <a href="#" (click)="loggingIn = !loggingIn">Log in</a>
                             </div> 
     
-                            <div class="row margin-bottop">
-                                <div class="col-md-5">
-                                    <hr>
-                                </div>
-    
-                                <div class="col-md-2">
-                                    <small>OR</small>
-    
-                                </div>
-    
-                                <div class="col-md-5">
-                                    <hr>
-                                </div>
-    
-                            </div>
                             
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <button class="btn btn-block btn-fb">
-                                            
-                                            <span class="fa fa-facebook"></span> &nbsp; Sign in with Facebook
-                                        
-                                    </button>
-                                </div>    
-                            </div>
-    
-                         
-                            <div class="row">
-                                    <div class="col-md-12">
-                                        <button class="btn btn-block btn-google">
-                                                
-                                                <span class="fa fa-google"></span>  &nbsp; Sign in with Google
-                                            
-                                        </button>
-                                    </div>    
-                                </div>
                         </form>
 
                 </div>
