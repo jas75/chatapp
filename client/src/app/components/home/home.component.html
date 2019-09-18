@@ -5,7 +5,7 @@
             <div class="card" style="width: 100%;">
                 <div class="card-body text-center">
                     <h2 class="card-title margin-bottop" style="margin-bottom: 30px;">Log in!</h2>
-                    <form [formGroup]="loginForm">
+                    <form [formGroup]="loginForm" (ngSubmit)="submitLoginForm()">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Alias / Email</label>
                             <input type="email" class="form-control" formControlName="email" aria-describedby="emailHelp" placeholder="Enter email">
