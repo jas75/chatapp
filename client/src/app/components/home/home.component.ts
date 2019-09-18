@@ -24,6 +24,13 @@ export class HomeComponent implements OnInit {
         email: ['', Validators.required],
         password: ['', Validators.required]
       });
+
+      this.registerForm = this.formBuilder.group({
+        email: [],
+        alias: [],
+        password: [],
+        confPassword: []
+      });
   }
   
   submitLoginForm() {
