@@ -27,6 +27,10 @@ app.get('/', function(req, res) {
 
 //app.use(express.static(path.join(__dirname, 'src/public')));
 
+
+var userRoutes = require('./src/routes/users.js');
+
+app.use('/api', userRoutes);
 // var indexRoutes = require('./src/routes/index.js');
 // var postRoutes = require('./src/routes/post.js');
 // var userRoutes = require('./src/routes/users.js');

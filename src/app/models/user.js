@@ -1,13 +1,21 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 
+
+var validateEmail = function(email) {
+    var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    return re.test(email)
+};
+
+
 var UserSchema = new mongoose.Schema({
     email: {
         type: String,
         unique: true,
         required: true,
         lowercase: true,
-        trim: true
+        trim: true,
+        validate: [validateEmail, 'Please fill a valid email address']
     },
     alias: {
         type: String,
@@ -40,6 +48,8 @@ UserSchema.pre('save', function(next) {
         });
     })
 })
+
+
 
 // if the user logs later on  need a safe way to compare passwords
 
