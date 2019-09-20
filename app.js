@@ -2,7 +2,7 @@ var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
-//var config = require('./src/config/config');
+var config = require('./src/config/config');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var cors = require('cors');
@@ -36,17 +36,18 @@ app.get('/', function(req, res) {
 // app.use('/api/user', userRoutes);
 // app.use('/api/community', communityRoutes);
 
-//mongoose.connect(config.db, { useNewUrlParser: true, useCreateIndex: true });
+var mongoUri = 'mongodb://' + config.dbUser + ':' + config.dbPass + '@ds341247.mlab.com:41247/chatappjas'
+mongoose.connect(mongoUri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
 
-//const connection = mongoose.connection;
+const connection = mongoose.connection;
 
-// connection.once('open', () => {
-//     console.log('MongoDB connection established successfully');
-// });
+connection.once('open', () => {
+    console.log('MongoDB connection established successfully');
+});
 
-// connection.on('error', (err) => {
-//     console.log("MongoDb connection error. Please make sure MongoDB is running." + err);
-//     process.exit();
-// });
+connection.on('error', (err) => {
+    console.log("MongoDb connection error. Please make sure MongoDB is running." + err);
+    process.exit();
+});
 
 module.exports = app;
