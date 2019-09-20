@@ -2,10 +2,10 @@
   "name": "server",
   "version": "1.0.0",
   "description": "back for chatapp",
-  "main": "server.js",
+  "main": "app.js",
   "scripts": {
     "client-install": "cd client && npm install",
-    "server": "nodemon sever.js",
+    "server": "nodemon ./bin/www",
     "client": "cd client && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
@@ -27,8 +27,11 @@
   },
   "dependencies": {
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "debug": "^4.1.1",
     "express": "^4.17.1",
     "mongoose": "^5.7.1",
+    "morgan": "^1.9.1",
     "passport": "^0.4.0"
   }
 }
