@@ -18,8 +18,8 @@ app.use(bodyParser.urlencoded({ extended:false }));
 app.use(bodyParser.json());
 passport.use(passport.initialize());
 
-// var passportMiddleware = require('./src/app/middleware/passport');
-// passport.use(passportMiddleware);
+var passportMiddleware = require('./src/middlewares/passport');
+passport.use(passportMiddleware);
 
 app.get('/', function(req, res) {
     return res.send('Hello! The API is at http://localhost:3000/api');
