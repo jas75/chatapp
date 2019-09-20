@@ -20,19 +20,29 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.createForms();
+  }
+
+  createForms() {
+    if (this.loggingIn) {
       this.loginForm = this.formBuilder.group({
         email: ['', Validators.required],
         password: ['', Validators.required]
       });
-
+    } else {
       this.registerForm = this.formBuilder.group({
-        email: [],
-        alias: [],
-        password: [],
-        confPassword: []
+        email: ['', Validators.required],
+        alias: ['', Validators.required],
+        password: ['', Validators.required],
+        confPassword: ['', Validators.required]
       });
+    }
   }
-  
+  switchForm() {
+    this.loggingIn = !this.loggingIn;
+    this.createForms();
+  }
+
   submitLoginForm() {
 
   }
