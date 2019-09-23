@@ -41,8 +41,9 @@ app.use('/api', userRoutes);
 // app.use('/api/user', userRoutes);
 // app.use('/api/community', communityRoutes);
 
-var mongoUri = 'mongodb://' + config.dbUser + ':' + config.dbPass + '@ds341247.mlab.com:41247/chatappjas'
-mongoose.connect(mongoUri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
+//var mongoUri = 'mongodb://' + config.dbUser + ':' + config.dbPass + '@ds341247.mlab.com:41247/chatappjas'
+
+mongoose.connect(config.dbHost + config.dbName, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
 
 const connection = mongoose.connection;
 

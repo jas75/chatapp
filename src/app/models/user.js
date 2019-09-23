@@ -17,9 +17,9 @@ var UserSchema = new mongoose.Schema({
         trim: true,
         validate: [validateEmail, 'Please fill a valid email address']
     },
-    alias: {
+    username: {
         type: String,
-        unique: true,
+        default: '',
         trim: true
     },
     password: {

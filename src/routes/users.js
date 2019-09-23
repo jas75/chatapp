@@ -16,6 +16,11 @@ router.get('/', function(req, res, next) {
 // @access  Public
 router.post('/user', authController.registerUser);
 
+// @route   DELETE /api/user
+// @des     Delete a user
+// @access  Auth
+router.delete('/user', passport.authenticate('jwt', { session: false }), authController.deleteUser);
+
 // @route   POST /api/login
 // @des     Login user
 // @access  Public
