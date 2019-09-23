@@ -14,22 +14,23 @@ exports.registerUser = (req, res) => {
     if (!req.body.email || !req.body.password) {
         return res.status(400).json({ 'msg': 'You need to send mail and password'});
     }
-
+    
     User.findOne({ email: req.body.email }, (err, user) => {
         if (err) {
             return res.status(400).json({ 'msg':  err});
         }
-
+        
         if (user) {
             return res.status(400).json({ 'msg': 'the user already exists'});
         }
-
-
-        // TODO always use var and now this ?
+        
+        
+        // TODO always use var and now this ? use a linter bitch
         let newUser = User(req.body);
-
+        
         newUser.save((err, user) => {
             if (err) {
+                console.log(err)
                 if (err.name === "ValidationError") {
                     return res.status(400).json({'msg':  "Wrong email format"});
                 }
