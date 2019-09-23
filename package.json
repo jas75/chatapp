@@ -7,7 +7,8 @@
     "client-install": "cd client && npm install",
     "back": "nodemon ./bin/www",
     "client": "cd client && npm start",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "mocha ./tests"
   },
   "repository": {
     "type": "git",
@@ -22,7 +23,9 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "concurrently": "^4.1.2",
-    "mocha": "^6.2.0"
+    "mocha": "^6.2.0",
+    "superagent": "^5.1.0",
+    "supertest": "^4.0.2"
   },
   "dependencies": {
     "bcrypt": "^3.0.6",
