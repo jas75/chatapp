@@ -4,13 +4,6 @@ const User = require('./../models/user');
 const logger = require('./../../../utils/logger');
 const tokenGenerator = require('../../helpers/token');
 
-// //TODO create a helper folder
-// function createToken (user) {
-//   return jwt.sign({ id: user.id, email: user.email }, config.jwtSecret, {
-//     expiresIn: 86400
-//   });
-// }
-
 exports.registerUser = (req, res) => {
   if (!req.body.email || !req.body.password) {
     logger.warn('Missing payload parameters');
@@ -28,7 +21,6 @@ exports.registerUser = (req, res) => {
       return res.status(400).json({ msg: 'the user already exists' });
     }
 
-    // TODO always use var and now this ? use a linter bitch
     const newUser = User(req.body);
 
     newUser.save((err, user) => {

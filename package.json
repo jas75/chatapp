@@ -7,7 +7,7 @@
     "client-install": "cd client && npm install",
     "back": "nodemon ./bin/www.js",
     "client": "cd client && npm start",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev": "concurrently \"npm run back\" \"npm run client\"",
     "test": "mocha ./tests"
   },
   "repository": {
