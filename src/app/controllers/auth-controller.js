@@ -85,11 +85,13 @@ exports.loginUser = (req, res) => {
 exports.deleteUser = (req, res) => {
   // useless ?
   if (!req.user) {
+    logger.error('Can\'t find an authenticated user');
     return res.status(401);
   }
 
   User.findOneAndDelete({ email: req.user.email }, (err) => {
     if (err) {
+      logger.error(err);
       return res.status(400).json({ msg: err });
     }
 
