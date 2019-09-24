@@ -5,7 +5,7 @@
 
 // describe('CRUD', function(done){
 //     const userCredentials = {
-//         email: 'test@gmail.com', 
+//         email: 'test@gmail.com',
 //         password: 'test'
 //     }
 //     describe('User', done => {

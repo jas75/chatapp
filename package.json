@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "client-install": "cd client && npm install",
-    "back": "nodemon ./bin/www",
+    "back": "nodemon ./bin/www.js",
     "client": "cd client && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "test": "mocha ./tests"
@@ -23,6 +23,12 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "concurrently": "^4.1.2",
+    "eslint": "6.4.0",
+    "eslint-config-standard": "14.1.0",
+    "eslint-plugin-import": "2.18.2",
+    "eslint-plugin-node": "10.0.0",
+    "eslint-plugin-promise": "4.2.1",
+    "eslint-plugin-standard": "4.0.1",
     "mocha": "^6.2.0",
     "superagent": "^5.1.0",
     "supertest": "^4.0.2"
