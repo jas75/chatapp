@@ -1,26 +1,30 @@
 const User = require('./../models/user');
-const jwt = require('jsonwebtoken');
-const config = require('./../../config/config');
+// const jwt = require('jsonwebtoken');
+// const config = require('./../../config/config');
 const logger = require('./../../../utils/logger');
+const tokenGenerator = require('../../helpers/token');
 
 // //TODO create a helper folder
-function createToken (user) {
-  return jwt.sign({ id: user.id, email: user.email }, config.jwtSecret, {
-    expiresIn: 86400
-  });
-}
+// function createToken (user) {
+//   return jwt.sign({ id: user.id, email: user.email }, config.jwtSecret, {
+//     expiresIn: 86400
+//   });
+// }
 
 exports.registerUser = (req, res) => {
   if (!req.body.email || !req.body.password) {
+    logger.warn('Missing payload parameters');
     return res.status(400).json({ msg: 'You need to send mail and password' });
   }
 
   User.findOne({ email: req.body.email }, (err, user) => {
     if (err) {
+      logger.error(err);
       return res.status(400).json({ msg: err });
     }
 
     if (user) {
+      logger.warn('Found an exact same email in database');
       return res.status(400).json({ msg: 'the user already exists' });
     }
 
@@ -66,7 +70,7 @@ exports.loginUser = (req, res) => {
         logger.info('Token created for ' + user.email);
         // log successful
         return res.status(200).json({
-          token: createToken(user),
+          token: tokenGenerator.createToken(user),
           userid: user._id
         });
       } else {
