@@ -83,10 +83,14 @@ export class HomeComponent implements OnInit {
         password: this.registerForm.get('password').value
       };
 
-      console.log(newUser);
-      // this.authService.register().subscribe(res => {
-      //   console.log(res);
-      // });
+      this.authService.register(newUser).subscribe(res => {
+
+        delete newUser.username;
+
+        this.authService.login(newUser).subscribe(user => {
+          console.log(user);
+        });
+      });
     }
   }
 }
