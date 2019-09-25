@@ -10,16 +10,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    HomeComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-    HttpClientModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+  imports: [],
+  exports: [HttpClientModule, ReactiveFormsModule],
 })
-export class AppModule { }
+export class SharedModule { }

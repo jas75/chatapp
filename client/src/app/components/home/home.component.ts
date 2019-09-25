@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
@@ -44,26 +44,27 @@ export class HomeComponent implements OnInit {
           Validators.required,
           Validators.minLength(5)
         ]],
-        confPassword: ['', Validators.required]
+        confPassword: ['', Validators.compose([
+          Validators.required,
+          Validators.minLength(5)
+        ])]
       },
        {
-        validator: this.checkIfMatchingPasswords('password', 'confPassword')
+        validator: this.passwordMatchValidator
       });
     }
   }
 
-
-  private checkIfMatchingPasswords(passwordKey: string, passwordConfirmationKey: string) {
-    return (group: FormGroup) => {
-      const passwordInput = group.controls[passwordKey];
-      const passwordConfirmationInput = group.controls[passwordConfirmationKey];
-      if (passwordInput.value !== passwordConfirmationInput.value) {
-        return passwordConfirmationInput.setErrors({notEquivalent: true});
-      } else {
-          return passwordConfirmationInput.setErrors(null);
-      }
-    };
+  passwordMatchValidator(control: AbstractControl) {
+    const password: string = control.get('password').value; // get password from our password form control
+    const confirmPassword: string = control.get('confPassword').value; // get password from our confirmPassword form control
+    // compare is the password math
+    if (password !== confirmPassword) {
+      // if they don't match, set an error in our confirmPassword form control
+      control.get('confPassword').setErrors({ NoPassswordMatch: true });
+    }
   }
+
   switchForm() {
     this.loggingIn = !this.loggingIn;
     this.createForms();
@@ -81,7 +82,7 @@ export class HomeComponent implements OnInit {
         username: this.registerForm.get('username').value,
         password: this.registerForm.get('password').value
       };
-  
+
       console.log(newUser);
       // this.authService.register().subscribe(res => {
       //   console.log(res);

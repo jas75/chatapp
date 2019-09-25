@@ -2,6 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HomeComponent } from './home.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { SharedModule } from 'src/app/shared.module';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -9,7 +11,9 @@ describe('HomeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ ReactiveFormsModule ],
+      imports: [
+        SharedModule
+      ],
       declarations: [ HomeComponent ]
     })
     .compileComponents();
@@ -21,12 +25,53 @@ describe('HomeComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should be an invalid register form', () => {
-    component.registerForm.controls['email'].setValue('');
-    component.registerForm.controls['alias'].setValue('');
-    component.registerForm.controls['password'].setValue('');
-    component.registerForm.controls['confPassword'].setValue('');
-    expect(component.registerForm.valid).toBeFalsy();
+  it('should create HomeComponent', () => {
+    expect(component).toBeTruthy();
+  });
+
+  describe('Register Form', () => {
+    it('should be an empty and invalid register form', () => {
+      expect(component.registerForm.valid).toBeFalsy();
+    });
+
+    it('email field validity', () => {
+      const email = component.registerForm.controls.email;
+      expect(email.valid).toBeFalsy();
+      email.setValue('tggrf');
+      expect(email.errors).toBeTruthy();
+      email.setValue('test@gmail.com');
+      expect(email.errors).toBeFalsy();
+      expect(email.valid).toBeTruthy();
+    });
+
+    it('username field validity', () => {
+      const username = component.registerForm.controls.username;
+      expect(username.valid).toBeFalsy();
+      username.setValue('test');
+      expect(username.errors).toBeFalsy();
+      expect(username.valid).toBeTruthy();
+    });
+
+    it('password field validity', () => {
+      const password = component.registerForm.controls.password;
+      expect(password.valid).toBeFalsy();
+      password.setValue('test');
+      expect(password.errors).toBeTruthy();
+      password.setValue('test2');
+      expect(password.valid).toBeTruthy();
+      expect(password.errors).toBeFalsy();
+    });
+
+    it('confPassword field validity', () => {
+      const password = component.registerForm.controls.password;
+      const confPassword = component.registerForm.controls.confPassword;
+      expect(confPassword.valid).toBeFalsy();
+      password.setValue('aaaaa');
+      confPassword.setValue('bbbbb');
+      expect(confPassword.valid).toBeFalsy();
+      confPassword.setValue('aaaaa');
+      expect(confPassword.valid).toBeTruthy();
+    });
   });
 
   it('should be an invalid login form', () => {
@@ -36,7 +81,5 @@ describe('HomeComponent', () => {
     expect(component.registerForm.valid).toBeFalsy();
   });
 
-  it('should create HomeComponent', () => {
-    expect(component).toBeTruthy();
-  });
+
 });
