@@ -150,7 +150,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                             </div>
-                            <input type="email" class="form-control" formControlName="email" aria-describedby="emailHelp" placeholder="Alias or Email">
+                            <input type="email" class="form-control" formControlName="email" aria-describedby="emailHelp" placeholder="Email">
                         </div>
 
                         <div class="form-group input-group">
@@ -170,7 +170,7 @@
                             <label class="form-check-label" for="exampleCheck1">Remember me</label>
                         </div>
 
-                        <button type="submit" class="btn btn-primary btn-lg">Login</button>
+                        <button [disabled]="!loginForm.valid" type="submit" class="btn btn-primary btn-lg">Login</button>
 
                         
 

@@ -1,8 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HomeComponent } from './home.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from 'src/app/shared.module';
 
 describe('HomeComponent', () => {
@@ -74,12 +72,22 @@ describe('HomeComponent', () => {
     });
   });
 
-  it('should be an invalid login form', () => {
-    component.switchForm();
-    component.loginForm.controls['email'].setValue('');
-    component.loginForm.controls['password'].setValue('');
-    expect(component.registerForm.valid).toBeFalsy();
+  describe('Login Form', () => {
+    beforeEach(() => {
+      component.switchForm();
+    });
+    it('should be an empty and invalid login form', () => {
+      expect(component.loginForm.valid).toBeFalsy();
+    });
+
+    it('email field validity', () => {
+      const email = component.loginForm.controls.email;
+      expect(email.valid).toBeFalsy();
+      email.setValue('test');
+      expect(email.valid).toBeTruthy();
+    });
   });
+
 
 
 });
