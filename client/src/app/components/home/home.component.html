@@ -49,47 +49,96 @@
                         </div>
 
                     </div>
+
                     <form [formGroup]="registerForm" (ngSubmit)="submitRegisterForm()">
 
-                            <div class="form-group input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
-                                    </div>
-                                    <input type="email" class="form-control" formControlName="alias" placeholder="Choose an Alias">
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                             </div>
+                            <!-- Add ajax to directly search in db if user already exists-->
+                            <input autocomplete="username" type="text" [ngClass]="{'is-invalid':
+                            registerForm.controls.username.invalid
+                            && registerForm.controls.username.touched,
+                            'is-valid':
+                            registerForm.controls.username.valid
+                            && registerForm.controls.username.touched
+                            }" class="form-control" formControlName="username" placeholder="Choose a Username">
                             
-                            <div class="form-group input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
-                                </div>
-                                <input type="email" class="form-control" formControlName="email" placeholder="Email">
-                            </div> 
+                        </div>
+                        
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+                            </div>
+                            <input autocomplete="email" [ngClass]="{'is-invalid':
+                            registerForm.controls.email.invalid 
+                            && registerForm.controls.email.touched,
+                            'is-valid':
+                            registerForm.controls.email.valid 
+                            && registerForm.controls.email.touched
+                            }" type="text" class="form-control" formControlName="email" placeholder="Email">
+                            
+                        </div> 
+                        
+                        
+                        
+                        <div class="text-left err-msg"  *ngIf="registerForm.controls.email.invalid && registerForm.controls.email.touched">
+                            <small class="text-danger text-left">
+                                    Wrong email format
+                            </small>
+                        </div>
+                    
 
-                            <div class="form-group input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-                                </div>
-                                <input type="email" class="form-control" formControlName="password" placeholder="Password">
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                             </div>
+                            <input autocomplete="new-password" type="password" [ngClass]="{'is-invalid': 
+                            registerForm.controls.password.invalid 
+                            && registerForm.controls.password.touched,
+                            'is-valid':
+                            registerForm.controls.password.valid 
+                            && registerForm.controls.password.touched
+                            }" class="form-control" formControlName="password" placeholder="Password">
+                        </div>
 
-                            <div class="form-group input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-                                </div>
-                                <input type="email" class="form-control" formControlName="confPassword" placeholder="Confirm Password">
+                        <div class="text-left err-msg"  *ngIf="registerForm.controls.password.invalid && registerForm.controls.password.touched">
+                            <small class="text-danger text-left">
+                                    Password must be at least 5 characters
+                            </small>
+                        </div>
+
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                             </div>
-    
-    
-                            <button type="submit" class="btn btn-primary btn-lg">Sign up</button>
-    
-                            
-    
-                            <div class="small-text margin-bottop">
-                                Have an account? <a href="#" (click)="switchForm()">Log in</a>
-                            </div> 
-    
-                            
-                        </form>
+                            <input type="password" autocomplete="new-password" [ngClass]="{'is-invalid':
+                            registerForm.controls.confPassword.invalid
+                            && registerForm.controls.confPassword.touched,
+                            'is-valid':
+                            registerForm.controls.confPassword.valid
+                            && registerForm.controls.confPassword.touched 
+                            }" class="form-control" formControlName="confPassword" placeholder="Confirm Password">
+                        </div>
+
+                        <div class="text-left err-msg"  *ngIf="registerForm.controls.confPassword.invalid && registerForm.controls.confPassword.touched">
+                            <small class="text-danger text-left">
+                                    Passwords do not match
+                            </small>
+                        </div>
+
+
+                        <button [disabled]="!registerForm.valid" type="submit" class="btn btn-primary btn-lg">Sign up</button>
+
+                        
+
+                        <div class="small-text margin-bottop">
+                            Have an account? <a href="#" (click)="switchForm()">Log in</a>
+                        </div> 
+
+                        
+                    </form>
 
                 </div>
 
