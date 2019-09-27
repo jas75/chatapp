@@ -79,8 +79,8 @@ export class HomeComponent implements OnInit {
         password: this.loginForm.controls.password.value
       };
 
-      this.authService.login(user).subscribe(token => {
-        this.router.navigate([`/test`]);
+      this.authService.login(user).subscribe(identity => {
+        this.router.navigate([`/${identity.user.username}`]);
       });
     }
   }
@@ -98,8 +98,8 @@ export class HomeComponent implements OnInit {
 
         delete newUser.username;
 
-        this.authService.login(newUser).subscribe(user => {
-          this.router.navigate([`/${newUser.username}`]);
+        this.authService.login(newUser).subscribe(identity => {
+          this.router.navigate([`/${identity.user.username}`]);
         });
       });
     }
