@@ -63,7 +63,7 @@ exports.loginUser = (req, res) => {
         // log successful
         return res.status(200).json({
           token: tokenGenerator.createToken(user),
-          userid: user._id
+          user: user
         });
       } else {
         return res.status(400).json({
