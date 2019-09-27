@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -18,7 +19,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -71,7 +73,16 @@ export class HomeComponent implements OnInit {
   }
 
   submitLoginForm() {
+    if (this.loginForm.valid) {
+      const user = {
+        email: this.loginForm.controls.email.value,
+        password: this.loginForm.controls.password.value
+      };
 
+      this.authService.login(user).subscribe(token => {
+        this.router.navigate([`/test`]);
+      });
+    }
   }
 
   submitRegisterForm() {
@@ -88,7 +99,7 @@ export class HomeComponent implements OnInit {
         delete newUser.username;
 
         this.authService.login(newUser).subscribe(user => {
-          console.log(user);
+          this.router.navigate([`/${newUser.username}`]);
         });
       });
     }
