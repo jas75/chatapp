@@ -87,7 +87,4 @@ describe('HomeComponent', () => {
       expect(email.valid).toBeTruthy();
     });
   });
-
-
-
 });
