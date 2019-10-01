@@ -24,7 +24,7 @@ export class AuthService {
       return this.currentUserSubject.value;
   }
 
-  register(credentials: any) {
+  register(credentials: any): Observable<any> {
     return this.http.post(this.url + '/api/user', credentials).pipe(
       catchError(e => {
         throw new Error(e);
