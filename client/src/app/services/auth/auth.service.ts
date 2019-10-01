@@ -13,39 +13,16 @@ export class AuthService {
 
   public currentUserSubject = new BehaviorSubject<Identity>(null);
   public currentUser: Observable<Identity> = this.currentUserSubject.asObservable();
-
-
   url = environment.url;
+
   constructor(
     private http: HttpClient,
     private router: Router
-  ) {
-    // let test;
-    // if (localStorage.getItem('token')) {
-    //   let user: Identity = {
-    //     token:  
-    //   }
-    //   this.currentUserSubject.next()
-    // } else {
-    //   test = null;
-    // }
-    // const parse = '{"token":' + '"' + localStorage.getItem('token') + '"}';
-    // this.currentUserSubject = new BehaviorSubject<Identity>(JSON.parse(parse));
-    // this.currentUser = this.currentUserSubject.asObservable();
-    // this.currentUser.subscribe(user => {
-    //   console.log(user);
-    // })
-
-
-  }
+  ) {}
 
   public get currentUserValue(): Identity {
       return this.currentUserSubject.value;
   }
-
-  // isLoggedin(): boolean {
-  //   if (this)
-  // }
 
   register(credentials: any) {
     return this.http.post(this.url + '/api/user', credentials).pipe(
@@ -69,12 +46,9 @@ export class AuthService {
   }
 
   logout(): void {
-    // remove user from local storage to log user out
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     this.currentUserSubject.next(null);
     this.router.navigate(['/']);
-    // this.currentUserSubject.unsubscribe();
-    //location.reload();
   }
 }
