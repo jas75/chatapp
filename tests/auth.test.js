@@ -28,7 +28,7 @@ describe('Auth Service', (done) => {
           }
         });
     });
-    it('should return status 200 if the user is logged in', (done) => {
+    it('should return status 200 OK if the user is logged in', (done) => {
       authenticatedUser.get('/api/special')
         .set('Authorization', 'Bearer ' + jwtToken)
         .expect(200, done);

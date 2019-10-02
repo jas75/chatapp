@@ -11,7 +11,7 @@ describe('User Service', (done) => {
       password: 'test'
     };
 
-    it('should return status 201 if user registered fine', done => {
+    it('should return status 201 Created if user registered fine', done => {
       request(app)
         .post('/api/user')
         .send(userCredentials)
@@ -21,7 +21,7 @@ describe('User Service', (done) => {
     // login the user before we run any tests
     const authenticatedUser = request.agent(app);
 
-    it('should return status 204 if user was deleted', done => {
+    it('should return status 204 No Content if user was deleted', done => {
       authenticatedUser
         .post('/api/login')
         .send(userCredentials)
