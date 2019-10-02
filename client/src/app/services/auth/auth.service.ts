@@ -11,14 +11,33 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
 
-  public currentUserSubject = new BehaviorSubject<Identity>(null);
-  public currentUser: Observable<Identity> = this.currentUserSubject.asObservable();
+  // public currentUserSubject = new BehaviorSubject<Identity>(null);
+  // public currentUser: Observable<Identity> = this.currentUserSubject.asObservable();
+
+  currentUserSubject: BehaviorSubject<Identity>;
   url = environment.url;
 
   constructor(
     private http: HttpClient,
     private router: Router
-  ) {}
+  ) {
+    if (localStorage.getItem('token')) {
+      const userItem = JSON.parse(localStorage.getItem('user'));
+      const user: Identity = {
+       token: localStorage.getItem('token'),
+       user: {
+         _id: userItem._id,
+         username: userItem.username,
+         email: userItem.email,
+         password: userItem.password
+       }
+     };
+      this.currentUserSubject = new BehaviorSubject<Identity>(user);
+    }
+    if (!localStorage.getItem('token')) {
+      this.currentUserSubject = new BehaviorSubject<Identity>(null);
+    }
+  }
 
   public get currentUserValue(): Identity {
       return this.currentUserSubject.value;
