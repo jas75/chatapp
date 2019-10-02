@@ -136,7 +136,8 @@
                         </div>
 
 
-                        <button [disabled]="!registerForm.valid" type="submit" class="btn btn-primary btn-lg">Sign up</button>
+                        <button [disabled]="!registerForm.valid" type="submit" class="btn btn-primary btn-lg"><span *ngIf="!loading">Sign up</span><i *ngIf="loading" class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>
+                        </button>
 
                         
 
@@ -185,7 +186,9 @@
                             <label class="form-check-label" for="exampleCheck1">Remember me</label>
                         </div>
 
-                        <button [disabled]="!loginForm.valid" type="submit" class="btn btn-primary btn-lg">Login</button>
+                        <button [disabled]="!loginForm.valid" type="submit" class="btn btn-primary btn-lg">
+                            <span *ngIf="!loading">Log in</span><i *ngIf="loading" class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>
+                        </button>
 
                         
 

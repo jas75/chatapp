@@ -19,11 +19,15 @@ export class HomeComponent implements OnInit {
 
   errorMsg = null;
 
+  loading = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router
-  ) { }
+  ) {
+
+   }
 
   ngOnInit() {
     this.createForms();
@@ -75,6 +79,7 @@ export class HomeComponent implements OnInit {
   }
 
   submitLoginForm(): void {
+    this.loading = true;
     if (this.loginForm.valid) {
       const user = {
         email: this.loginForm.controls.email.value,
@@ -82,9 +87,11 @@ export class HomeComponent implements OnInit {
       };
 
       this.authService.login(user).subscribe(identity => {
+        this.loading = false;
         this.router.navigate([`/${identity.user.username}`]);
       },
       err => {
+        this.loading = false;
         if (err.status === 400) {
           if (err.error.msg === 'User does not exists') {
             this.errorMsg = err.error.msg;
@@ -100,6 +107,8 @@ export class HomeComponent implements OnInit {
 
   submitRegisterForm(): void {
 
+    this.loading = true;
+
     if (this.registerForm.valid) {
       const newUser = {
         email: this.registerForm.get('email').value,
@@ -112,11 +121,12 @@ export class HomeComponent implements OnInit {
         delete newUser.username;
 
         this.authService.login(newUser).subscribe(identity => {
+          this.loading = false;
           this.router.navigate([`/${identity.user.username}`]);
         });
       },
       err => {
-        console.log(err);
+        this.loading = false;
         if (err.status === 400) {
           if (err.error.msg === 'User already exists') {
             this.errorMsg = err.error.msg;
