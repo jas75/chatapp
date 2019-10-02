@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
   loginForm: FormGroup;
   registerForm: FormGroup;
 
-  loggingIn = false;
+  loggingIn = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -80,7 +80,21 @@ export class HomeComponent implements OnInit {
       };
 
       this.authService.login(user).subscribe(identity => {
+        console.log(identity);
         this.router.navigate([`/${identity.user.username}`]);
+      },
+      err => {
+        console.log(err.error);
+        if (err.status === 400) {
+          console.log('error 400')
+          if (err.error.msg === 'User does not exists') {
+            console.log('this user does not exist');
+          }
+
+          if (err.error.msg === 'Email and password don\'t match') {
+            console.log('this email and password don\'t match');
+          }
+        }
       });
     }
   }
@@ -101,6 +115,9 @@ export class HomeComponent implements OnInit {
         this.authService.login(newUser).subscribe(identity => {
           this.router.navigate([`/${identity.user.username}`]);
         });
+      },
+      err => {
+        console.log(err);
       });
     }
   }

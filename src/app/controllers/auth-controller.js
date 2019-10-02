@@ -53,7 +53,7 @@ exports.loginUser = (req, res) => {
 
     if (!user) {
       logger.warn("Can't find a user");
-      return res.status(400).json({ msg: 'the user does not  exists' });
+      return res.status(400).json({ msg: 'User does not exists' });
     }
 
     // method of model User
@@ -67,7 +67,7 @@ exports.loginUser = (req, res) => {
         });
       } else {
         return res.status(400).json({
-          msg: 'the email and password don\'t match'
+          msg: 'Email and password don\'t match'
         });
       }
     });

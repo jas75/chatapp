@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { catchError, retry, tap } from 'rxjs/operators';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, throwError, of, identity } from 'rxjs';
 import { User, Identity } from 'src/app/interfaces/identity';
 import { Router } from '@angular/router';
 
@@ -27,20 +27,23 @@ export class AuthService {
   register(credentials: any): Observable<any> {
     return this.http.post(this.url + '/api/user', credentials).pipe(
       catchError(e => {
-        throw new Error(e);
+        // throw new Error(e);
+        return throwError(e);
       })
     );
   }
 
   login(credentials: any): Observable<Identity> {
+    // tslint:disable-next-line: no-shadowed-variable
     return this.http.post<Identity>(this.url + '/api/login', credentials).pipe(tap(identity => {
       localStorage.setItem('token', identity.token);
       localStorage.setItem('user', JSON.stringify(identity.user));
       this.currentUserSubject.next(identity);
+      console.log(identity);
       return identity;
     }),
       catchError(e => {
-        throw new Error(e);
+        return throwError(e);
       })
     );
   }
