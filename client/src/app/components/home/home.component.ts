@@ -15,7 +15,9 @@ export class HomeComponent implements OnInit {
   loginForm: FormGroup;
   registerForm: FormGroup;
 
-  loggingIn = true;
+  loggingIn = false;
+
+  errorMsg = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -67,12 +69,12 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  switchForm() {
+  switchForm(): void {
     this.loggingIn = !this.loggingIn;
     this.createForms();
   }
 
-  submitLoginForm() {
+  submitLoginForm(): void {
     if (this.loginForm.valid) {
       const user = {
         email: this.loginForm.controls.email.value,
@@ -80,26 +82,23 @@ export class HomeComponent implements OnInit {
       };
 
       this.authService.login(user).subscribe(identity => {
-        console.log(identity);
         this.router.navigate([`/${identity.user.username}`]);
       },
       err => {
-        console.log(err.error);
         if (err.status === 400) {
-          console.log('error 400')
           if (err.error.msg === 'User does not exists') {
-            console.log('this user does not exist');
+            this.errorMsg = err.error.msg;
           }
 
           if (err.error.msg === 'Email and password don\'t match') {
-            console.log('this email and password don\'t match');
+            this.errorMsg = err.error.msg;
           }
         }
       });
     }
   }
 
-  submitRegisterForm() {
+  submitRegisterForm(): void {
 
     if (this.registerForm.valid) {
       const newUser = {

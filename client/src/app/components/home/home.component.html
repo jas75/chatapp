@@ -145,6 +145,14 @@
                 <!-- Login form -->
                 <div class="card-body text-center" *ngIf="loggingIn">
                     <h2 class="card-title margin-bottop" style="margin-bottom: 30px;">Log in!</h2>
+                    
+                    <div *ngIf="errorMsg" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Ouch!</strong> {{errorMsg}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
                     <form [formGroup]="loginForm" (ngSubmit)="submitLoginForm()">
                         <div class="form-group input-group">
                             <div class="input-group-prepend">
