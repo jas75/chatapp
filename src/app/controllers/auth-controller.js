@@ -17,8 +17,8 @@ exports.registerUser = (req, res) => {
     }
 
     if (user) {
-      logger.warn('Found an exact same email in database');
-      return res.status(400).json({ msg: 'the user already exists' });
+      logger.warn(user.email + ' is already in database');
+      return res.status(400).json({ msg: 'User already exists' });
     }
 
     const newUser = User(req.body);

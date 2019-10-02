@@ -117,6 +117,11 @@ export class HomeComponent implements OnInit {
       },
       err => {
         console.log(err);
+        if (err.status === 400) {
+          if (err.error.msg === 'User already exists') {
+            this.errorMsg = err.error.msg;
+          }
+        }
       });
     }
   }

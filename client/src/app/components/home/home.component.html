@@ -50,6 +50,13 @@
 
                     </div>
 
+                    <div *ngIf="errorMsg" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Ouch!</strong> {{errorMsg}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
                     <form [formGroup]="registerForm" (ngSubmit)="submitRegisterForm()">
 
                         <div class="form-group input-group">
