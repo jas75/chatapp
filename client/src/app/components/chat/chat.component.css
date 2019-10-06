@@ -1,0 +1,5 @@
+.list-group-item[aria-expanded="true"]{
+    background-color: black !important;
+ border-color: #aed248;
+
+}
