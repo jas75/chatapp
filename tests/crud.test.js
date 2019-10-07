@@ -16,7 +16,7 @@ describe('CRUD', (done) => {
     let userId;
     let jwtToken;
 
-    before(done => {
+    before((done) => { 
         user
         .post('/api/login')
         .send(userCredentials)

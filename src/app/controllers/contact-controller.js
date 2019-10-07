@@ -1,4 +1,4 @@
-const User = require('./../models//user');
+const User = require('./../models/user');
 const Relationship = require('./../models/relationship');
 const logger = require('./../../../utils/logger');
 
@@ -84,13 +84,14 @@ exports.getOneOrManyContacts = (req, res) => {
   ]})
   .then(users => {
     if (users.length <= 0) {
+      logger.info('Didn\'t find any user for these refs')
       return res.status(204).send();
     }
     
+    logger.info(`${users.length} user matching`);
     return res.status(200).json({ status: 'OK', users: users });
   })
   .catch(err => {
-    console.log(err);
     logger.error(err);
     return res.status(400).json({ status: 'Bad Request', msg: 'Something wrong happened' });
   });
