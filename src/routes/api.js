@@ -43,4 +43,9 @@ router.post('/contact', passport.authenticate('jwt', { session: false }), contac
 // @access  Auth
 router.delete('/contact', passport.authenticate('jwt', { session: false }), contactController.removeContact);
 
+
+// @route   GET /api/contact/:email
+// @des     Returns an array of one or several users suggestions
+// @access  Auth
+router.get('/contact/:email', passport.authenticate('jwt', { session: false }), contactController.getOneOrManyContacts)
 module.exports = router;

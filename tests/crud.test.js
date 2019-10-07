@@ -107,5 +107,49 @@ describe('CRUD', (done) => {
         });
     });
 
+    // Has to have at least two documents in db
+    it('should list several users info -> 200 OK', done => {
+        user.get('/api/contact/jas')
+        .set('Authorization', 'Bearer ' + jwtToken)
+        .end((err, response) => {
+            if (err) {
+                logger.error(err);
+            } else {
+                expect(response.status).to.equal(200);
+                expect(response.body.users).to.have.lengthOf(2);
+                done();
+            }
+        });
+    });
+
+
+    // must have only one document name test in db
+    it('should list just one user info -> 200 OK', done => {
+        user.get('/api/contact/test')
+        .set('Authorization', 'Bearer ' + jwtToken)
+        .end((err, response) => {
+            if (err) {
+                logger.error(err);
+            } else {
+                expect(response.status).to.equal(200);
+                expect(response.body.users).to.have.lengthOf(1);
+                done();
+            }
+        });
+    });
+
+    it('should return nothing -> 204 No Content', done => {
+        user.get('/api/contact/tessst')
+        .set('Authorization', 'Bearer ' + jwtToken)
+        .end((err, response) => {
+            if (err) {
+                logger.error(err);
+            } else {
+                expect(response.status).to.equal(204);
+                expect(response.body.users).to.equal(undefined);
+                done();
+            }
+        });
+    });
   });
 });
