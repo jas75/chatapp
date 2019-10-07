@@ -84,7 +84,7 @@ exports.getOneOrManyContacts = (req, res) => {
   ]})
   .then(users => {
     if (users.length <= 0) {
-      logger.info('Didn\'t find any user for these refs')
+      logger.info('Didn\'t find any user for these refs');
       return res.status(204).send();
     }
     
