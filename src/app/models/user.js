@@ -25,7 +25,11 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true
-  }
+  },
+  friends: [{
+    type: mongoose.Schema.Types.ObjectId,
+    required: false
+  }]
 });
 
 // pre save schema done before saving to database

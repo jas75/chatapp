@@ -12,6 +12,10 @@ const RelationshipSchema = new mongoose.Schema({
     ref: 'User',
     trim: true,
     required: true
+  },
+  areFriends: {
+    type: Boolean,
+    default: false
   }
 });
 

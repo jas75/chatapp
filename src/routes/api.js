@@ -21,6 +21,12 @@ router.post('/user', authController.registerUser);
 // @access  Auth
 router.delete('/user', passport.authenticate('jwt', { session: false }), authController.deleteUser);
 
+
+// @route   GET /api/user/:email
+// @des     Returns an array of one or several users suggestions
+// @access  Auth
+router.get('/user/:email', passport.authenticate('jwt', { session: false }), contactController.getOneOrManyUsers);
+
 // @route   POST /api/login
 // @des     Login user
 // @access  Public
@@ -34,18 +40,28 @@ router.get('/special', passport.authenticate('jwt', { session: false }), (req, r
 });
 
 // @route   POST /api/contact
-// @des     Add a contact
+// @des     Send a friend request
 // @access  Auth
-router.post('/contact', passport.authenticate('jwt', { session: false }), contactController.addContact);
+router.post('/contact', passport.authenticate('jwt', { session: false }), contactController.sendFriendRequest);
+
+// @route   POST /api/contact/confirm
+// @des     Accept friend request
+// @access  Auth
+
+// @route   POST /api/contact/reject
+// @des     Reject friend request
+// @access  Auth
+
+
+// @route   GET /api/contact
+// @des     Get all current user friends
+// @access  Auth
+
 
 // @route   DELETE /api/contact
-// @des     Remove a contact
+// @des     Remove friendship
 // @access  Auth
 router.delete('/contact', passport.authenticate('jwt', { session: false }), contactController.removeContact);
 
 
-// @route   GET /api/contact/:email
-// @des     Returns an array of one or several users suggestions
-// @access  Auth
-router.get('/contact/:email', passport.authenticate('jwt', { session: false }), contactController.getOneOrManyContacts)
 module.exports = router;

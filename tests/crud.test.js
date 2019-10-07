@@ -109,7 +109,7 @@ describe('CRUD', (done) => {
 
     // Has to have at least two documents in db
     it('should list several users info -> 200 OK', done => {
-        user.get('/api/contact/jas')
+        user.get('/api/user/jas')
         .set('Authorization', 'Bearer ' + jwtToken)
         .end((err, response) => {
             if (err) {
@@ -125,7 +125,7 @@ describe('CRUD', (done) => {
 
     // must have only one document name test in db
     it('should list just one user info -> 200 OK', done => {
-        user.get('/api/contact/test')
+        user.get('/api/user/test')
         .set('Authorization', 'Bearer ' + jwtToken)
         .end((err, response) => {
             if (err) {
@@ -139,7 +139,7 @@ describe('CRUD', (done) => {
     });
 
     it('should return nothing -> 204 No Content', done => {
-        user.get('/api/contact/tessst')
+        user.get('/api/user/tessst')
         .set('Authorization', 'Bearer ' + jwtToken)
         .end((err, response) => {
             if (err) {
