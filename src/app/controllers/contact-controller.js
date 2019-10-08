@@ -85,7 +85,7 @@ exports.removeContact = (req, res) => {
             { sender: req.body.idToDelete, recipient: req.user._id }
           ]})
           .then(relation => {
-            console.log('relation: ', relation)
+            console.log('relation: ', relation);
             if (relation.deletedCount > 0) {
               logger.info(`${req.user._id} and ${req.body.idToDelete} are not friends anymore`);
               return res.status(200).json({ status: "Ok", msg: 'Connection successfullly removed'});
