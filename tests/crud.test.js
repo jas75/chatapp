@@ -7,8 +7,14 @@ const logger = require('./../utils/logger');
 describe('CRUD', (done) => {
   
     const userCredentials = {
-        email: 'test@gmail.com',
-        password: 'testt'
+        email: 'test1@gmail.com',
+        password: 'test1'
+    };
+
+    const userCredentials2 = {
+        email: 'test2@gmail.com',
+        password: 'test2',
+        id: '5d9cd2200c1b5d249920b1d6'
     };
 
     const user = request.agent(app);
@@ -33,10 +39,10 @@ describe('CRUD', (done) => {
     });
 
   describe('Relationships', (done) => {
-    it('should add a new relationship -> 201 Created', (done) => {
+    it('should send a freind request -> 201 Created', (done) => {
         const relationship = {
-            user_id_1: userId,
-            user_id_2: '5d94791f7859e1131aaf448a'
+            sender: userId,
+            recipient: userCredentials2.id
         };
         user.post('/api/contact')
         .set('Authorization', 'Bearer ' + jwtToken)
@@ -51,10 +57,10 @@ describe('CRUD', (done) => {
         });
     });
 
-    it('should not create relationship because already exists -> 409 Conflict', (done) => {
+    it('should not send friend request because already exists -> 409 Conflict', (done) => {
         const relationship = {
-            user_id_1: userId,
-            user_id_2: '5d94791f7859e1131aaf448a'
+            sender: userId,
+            recipient: userCredentials2.id
         };
 
         user.post('/api/contact')
@@ -72,9 +78,9 @@ describe('CRUD', (done) => {
 
     it('should remove a relationship -> 200 OK', (done) => {
         // tester avec des id qui existe et qui existent pas
+        // TODO faire evoluer ce code
         const relationship = {
-            user_id_1: userId,
-            user_id_2: '5d94791f7859e1131aaf448a'
+            idToDelete: userCredentials2.id
         };
         user.delete('/api/contact')
         .send(relationship)
@@ -90,9 +96,10 @@ describe('CRUD', (done) => {
     });
 
     it('should not remove anything because relationship does\'nt exist -> 400 Bad Request', (done) => {
+        //test ca plus seieusement pas juste le status !!
         const relationship = {
-            user_id_1: userId,
-            user_id_2: '5d94791f7859e1131aaf448a'
+            sender: userId,
+            recipient: userCredentials2.id
         };
         user.delete('/api/contact')
         .set('Authorization', 'Bearer ' + jwtToken)
@@ -109,14 +116,14 @@ describe('CRUD', (done) => {
 
     // Has to have at least two documents in db
     it('should list several users info -> 200 OK', done => {
-        user.get('/api/user/jas')
+        user.get('/api/user/test')
         .set('Authorization', 'Bearer ' + jwtToken)
         .end((err, response) => {
             if (err) {
                 logger.error(err);
             } else {
                 expect(response.status).to.equal(200);
-                expect(response.body.users).to.have.lengthOf(2);
+                expect(response.body.users).to.have.lengthOf(3);
                 done();
             }
         });
@@ -125,7 +132,7 @@ describe('CRUD', (done) => {
 
     // must have only one document name test in db
     it('should list just one user info -> 200 OK', done => {
-        user.get('/api/user/test')
+        user.get('/api/user/test1')
         .set('Authorization', 'Bearer ' + jwtToken)
         .end((err, response) => {
             if (err) {

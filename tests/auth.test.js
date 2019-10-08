@@ -8,8 +8,8 @@ const logger = require('../utils/logger');
 describe('Auth Service', (done) => {
   describe('Passport.js', done => {
     const userCredentials = {
-      email: 'test@gmail.com',
-      password: 'testt'
+      email: 'test1@gmail.com',
+      password: 'test1'
     };
     // login the user before we run any tests
     const authenticatedUser = request.agent(app);

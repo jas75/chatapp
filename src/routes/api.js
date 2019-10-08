@@ -11,6 +11,17 @@ router.get('/', (req, res, next) => {
   return res.send('Hello this the api');
 });
 
+// @route   GET /api/special
+// @des     Test the auth
+// @access  Auth
+router.get('/special', passport.authenticate('jwt', { session: false }), (req, res) => {
+  return res.json({ msg: 'Hey' + req.user.email });
+});
+
+// @route   GET /api/user
+// @des     Get current user
+// @access  Auth
+
 // @route   POST /api/user
 // @des     Register a user
 // @access  Public
@@ -32,12 +43,10 @@ router.get('/user/:email', passport.authenticate('jwt', { session: false }), con
 // @access  Public
 router.post('/login', authController.loginUser);
 
-// @route   GET /api/special
-// @des     Test the auth
+
+// @route   GET /api/contact
+// @des     Get all current user friends
 // @access  Auth
-router.get('/special', passport.authenticate('jwt', { session: false }), (req, res) => {
-  return res.json({ msg: 'Hey' + req.user.email });
-});
 
 // @route   POST /api/contact
 // @des     Send a friend request
@@ -47,14 +56,10 @@ router.post('/contact', passport.authenticate('jwt', { session: false }), contac
 // @route   POST /api/contact/confirm
 // @des     Accept friend request
 // @access  Auth
+router.post('/contact/confirm', passport.authenticate('jwt', { session: false }), contactController.acceptFriend);
 
 // @route   POST /api/contact/reject
 // @des     Reject friend request
-// @access  Auth
-
-
-// @route   GET /api/contact
-// @des     Get all current user friends
 // @access  Auth
 
 
