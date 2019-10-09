@@ -1,10 +1,10 @@
 const expect = require('chai').expect;
 // var app = require('../bin/www');
-const app = require('./../app');
+const app = require('../app');
 const request = require('supertest');
-const logger = require('./../utils/logger');
+const logger = require('../utils/logger');
 
-describe('CRUD', (done) => {
+describe('API', (done) => {
   
     const userCredentials = {
         email: 'test1@gmail.com',
