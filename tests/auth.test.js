@@ -33,5 +33,7 @@ describe('Auth Service', (done) => {
         .set('Authorization', 'Bearer ' + jwtToken)
         .expect(200, done);
     });
+
+    //test if user is not logged in to acces other routes
   });
 });

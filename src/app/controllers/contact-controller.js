@@ -36,12 +36,12 @@ exports.sendFriendRequest = (req, res) => {
           return res.status(201).json({ status: 'OK', msg: 'Friend Request sent' });
         })
         .catch(err => {
-          logger.error(err);
+          logger.log({ 'level':'error', msg: err});
           return res.status(400).json({ status: 'Bad Request', msg: 'Couldn\'t send friend request because of' + err });
         });
     })
     .catch(err => {
-      logger.error(err);
+      logger.log({ 'level':'error', msg: err});
       return res.status(400).json({ status: 'Bad Request', msg: 'Couldn\'t return a relation because of' + err });
     });
 };

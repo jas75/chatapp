@@ -131,7 +131,6 @@ describe('API', (done) => {
         .send(userCredentials2)
         .end((err, response) => {
             if (err) {
-                console.log(err)
                 logger.error(err);
             } else {
                 userId = response.body.user._id;
@@ -149,7 +148,6 @@ describe('API', (done) => {
                     if (err) {
                         logger.error(err);
                     } else {
-                        console.log(response)
                         expect(response.status).to.equal(201);
                         expect(response).to.exist;
                         done();
