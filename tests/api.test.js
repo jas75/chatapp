@@ -8,7 +8,8 @@ describe('API', (done) => {
   
     const userCredentials = {
         email: 'test1@gmail.com',
-        password: 'test1'
+        password: 'test1',
+        id: '5d9cd2150c1b5d249920b1d5'
     };
 
     const userCredentials2 = {
@@ -22,7 +23,7 @@ describe('API', (done) => {
     let userId;
     let jwtToken;
 
-    before((done) => { 
+    beforeEach((done) => { 
         user
         .post('/api/login')
         .send(userCredentials)
@@ -38,8 +39,56 @@ describe('API', (done) => {
         });
     });
 
-  describe('Relationships', (done) => {
-    it('should send a freind request -> 201 Created', (done) => {
+
+    describe('Users', (done) => {
+        // Has to have at least two documents in db
+        it('should list several users info -> 200 OK', done => {
+            user.get('/api/user/test')
+            .set('Authorization', 'Bearer ' + jwtToken)
+            .end((err, response) => {
+                if (err) {
+                    logger.error(err);
+                } else {
+                    expect(response.status).to.equal(200);
+                    expect(response.body.users).to.have.lengthOf(3);
+                    done();
+                }
+            });
+        });
+
+
+        // must have only one document name test in db
+        it('should list just one user info -> 200 OK', done => {
+            user.get('/api/user/test1')
+            .set('Authorization', 'Bearer ' + jwtToken)
+            .end((err, response) => {
+                if (err) {
+                    logger.error(err);
+                } else {
+                    expect(response.status).to.equal(200);
+                    expect(response.body.users).to.have.lengthOf(1);
+                    done();
+                }
+            });
+        });
+
+        it('should return nothing -> 204 No Content', done => {
+            user.get('/api/user/tessst')
+            .set('Authorization', 'Bearer ' + jwtToken)
+            .end((err, response) => {
+                if (err) {
+                    logger.error(err);
+                } else {
+                    expect(response.status).to.equal(204);
+                    expect(response.body.users).to.equal(undefined);
+                    done();
+                }
+            });
+        });
+    });
+
+  describe('Contact', (done) => {
+    it('should send a friend request -> 201 Created', (done) => {
         const relationship = {
             sender: userId,
             recipient: userCredentials2.id
@@ -57,7 +106,7 @@ describe('API', (done) => {
         });
     });
 
-    it('should not send friend request because already exists -> 409 Conflict', (done) => {
+    it('should not send friend request because already sent or existing -> 409 Conflict', (done) => {
         const relationship = {
             sender: userId,
             recipient: userCredentials2.id
@@ -76,9 +125,41 @@ describe('API', (done) => {
         });
     });
 
-    it('should remove a relationship -> 200 OK', (done) => {
-        // tester avec des id qui existe et qui existent pas
-        // TODO faire evoluer ce code
+    it('should accept a friend request -> 201 Created', (done) => {
+        user
+        .post('/api/login')
+        .send(userCredentials2)
+        .end((err, response) => {
+            if (err) {
+                console.log(err)
+                logger.error(err);
+            } else {
+                userId = response.body.user._id;
+                jwtToken = response.body.token;
+                
+                const sender = {
+                    sender: userCredentials.id
+                };
+                
+                user
+                .post('/api/contact/confirm')
+                .set('Authorization', 'Bearer ' + jwtToken)
+                .send(sender)
+                .end((err, response) => {
+                    if (err) {
+                        logger.error(err);
+                    } else {
+                        console.log(response)
+                        expect(response.status).to.equal(201);
+                        expect(response).to.exist;
+                        done();
+                    }
+                });
+            }
+        });     
+    });
+
+    it('should remove a contact -> 200 OK', (done) => {
         const relationship = {
             idToDelete: userCredentials2.id
         };
@@ -94,12 +175,10 @@ describe('API', (done) => {
             }
         });
     });
-
+    
     it('should not remove anything because relationship does\'nt exist -> 400 Bad Request', (done) => {
-        //test ca plus seieusement pas juste le status !!
         const relationship = {
-            sender: userId,
-            recipient: userCredentials2.id
+            idToDelete: userCredentials2.id
         };
         user.delete('/api/contact')
         .set('Authorization', 'Bearer ' + jwtToken)
@@ -108,55 +187,16 @@ describe('API', (done) => {
             if (err) {
                 logger.error(err);
             } else {
+                expect(response.body.msg).to.equal('Relationship does not exist');
                 expect(response.status).to.equal(400);
                 done();
             }
         });
     });
 
-    // Has to have at least two documents in db
-    it('should list several users info -> 200 OK', done => {
-        user.get('/api/user/test')
-        .set('Authorization', 'Bearer ' + jwtToken)
-        .end((err, response) => {
-            if (err) {
-                logger.error(err);
-            } else {
-                expect(response.status).to.equal(200);
-                expect(response.body.users).to.have.lengthOf(3);
-                done();
-            }
-        });
-    });
+    // it('should refuse a friend request -> 204 No Content', (done) => {
+        
+    // });
 
-
-    // must have only one document name test in db
-    it('should list just one user info -> 200 OK', done => {
-        user.get('/api/user/test1')
-        .set('Authorization', 'Bearer ' + jwtToken)
-        .end((err, response) => {
-            if (err) {
-                logger.error(err);
-            } else {
-                expect(response.status).to.equal(200);
-                expect(response.body.users).to.have.lengthOf(1);
-                done();
-            }
-        });
-    });
-
-    it('should return nothing -> 204 No Content', done => {
-        user.get('/api/user/tessst')
-        .set('Authorization', 'Bearer ' + jwtToken)
-        .end((err, response) => {
-            if (err) {
-                logger.error(err);
-            } else {
-                expect(response.status).to.equal(204);
-                expect(response.body.users).to.equal(undefined);
-                done();
-            }
-        });
-    });
   });
 });

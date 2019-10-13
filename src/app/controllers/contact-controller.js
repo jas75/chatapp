@@ -60,38 +60,31 @@ exports.removeContact = (req, res) => {
   User.findOne({ _id: req.user._id })
   .then(doc => {
     logger.info(`Found ${doc.email}`);
-    logger.log(doc);
-    console.log('doc.friends avant', doc.friends);
     doc.friends = doc.friends.filter(el => {
       el._id === req.body.idToDelete;
     });
-    console.log('doc.friends apres', doc.friends);
     doc.save()
     .then(() => {
-      logger.info(`Now search for ${req.body.idToDelete}`);
+      logger.info(`Searching for ${req.body.idToDelete}`);
       User.findOne({ _id: req.body.idToDelete })
       .then(doc2 => {
         logger.info(`Found ${doc2.email}`);
-        console.log('doc2.friends avant', doc2.friends);
         doc2.friends = doc2.friends.filter(el => {
           el._id === req.user._id;
         });
-        console.log('doc2.friends après', doc2.friends);
         doc2.save()
         .then(() => {
-          logger.info('Now try :) to delete weteher the condtion');
           Relationship.deleteOne({ $or: [
             { sender: req.user._id, recipient: req.body.idToDelete },
             { sender: req.body.idToDelete, recipient: req.user._id }
           ]})
           .then(relation => {
-            console.log('relation: ', relation);
             if (relation.deletedCount > 0) {
-              logger.info(`${req.user._id} and ${req.body.idToDelete} are not friends anymore`);
+              logger.info(`${req.user._id} blocked ${req.body.idToDelete}`);
               return res.status(200).json({ status: "Ok", msg: 'Connection successfullly removed'});
             }
-            logger.warn(`${req.user._idr} and ${req.body.idToDelete} are not friends`);
-            return res.status(400).json({ status: 'Bad Request', msg: 'Bound does not exist'});
+            logger.warn(`${req.user._id} and ${req.body.idToDelete} are not friends`);
+            return res.status(400).json({ status: 'Bad Request', msg: 'Relationship does not exist'});
           })
           .catch(err => {
             logger.error(err);
@@ -158,8 +151,14 @@ exports.acceptFriend = (req, res) => {
 
   Relationship.findOne({ sender: req.body.sender, recipient: req.user._id })
   .then(relation => {
-    if (relation.areFriends !== null && relation.areFriends === true) {
-      return res.status(400).json({status: 'Bad Request', msg: 'You are already friends'});
+    if (!relation) {
+      logger.warn(`No Relationship found for ${req.body.sender} and ${req.user._id}`);
+      return res.status(400).json({ status: 'Bad Request', msg: 'There is no relationship'});
+    }
+
+    if (relation.areFriends === true) {
+      logger.warn(`${req.body.sender} and ${req.user._id} already friends`);
+      return res.status(400).json({ status: 'Bad Request', msg: 'You are already friends' });
     }
     relation.areFriends = true;
     relation.save()
