@@ -11,12 +11,16 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ErrorInterceptor } from './helpers/error.interceptor';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { AddContactComponent } from './components/add-contact/add-contact.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    DashboardComponent
+    DashboardComponent,
+    AddContactComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,
