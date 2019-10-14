@@ -53,20 +53,15 @@ router.post('/login', authController.loginUser);
 // @access  Auth
 router.post('/contact', passport.authenticate('jwt', { session: false }), contactController.sendFriendRequest);
 
-// @route   POST /api/contact/confirm
-// @des     Accept friend request
-// @access  Auth
-router.post('/contact/confirm', passport.authenticate('jwt', { session: false }), contactController.acceptFriend);
-
-// @route   POST /api/contact/reject
-// @des     Reject friend request
-// @access  Auth
-
-
 // @route   DELETE /api/contact
 // @des     Remove friendship
 // @access  Auth
 router.delete('/contact', passport.authenticate('jwt', { session: false }), contactController.removeContact);
+
+// @route   POST /api/contact/confirm
+// @des     Accept friend request
+// @access  Auth
+router.post('/contact/confirm', passport.authenticate('jwt', { session: false }), contactController.acceptFriend);
 
 
 module.exports = router;

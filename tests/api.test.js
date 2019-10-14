@@ -191,10 +191,5 @@ describe('API', (done) => {
             }
         });
     });
-
-    // it('should refuse a friend request -> 204 No Content', (done) => {
-        
-    // });
-
   });
 });

@@ -210,9 +210,3 @@ exports.acceptFriend = (req, res) => {
   });
 
 };
-
-exports.rejectFriendRequest = (req, res) => {
-  // Si je rejette , supprime juste la Relation avec les deux id
-
- // Relationship.
-};
