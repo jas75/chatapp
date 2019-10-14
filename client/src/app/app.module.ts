@@ -7,7 +7,7 @@ import { HomeComponent } from './components/home/home.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ChatComponent } from './components/chat/chat.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ErrorInterceptor } from './helpers/error.interceptor';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -16,7 +16,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
   declarations: [
     AppComponent,
     HomeComponent,
-    ChatComponent
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
