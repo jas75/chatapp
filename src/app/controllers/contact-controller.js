@@ -124,15 +124,16 @@ exports.getOneOrManyUsers = (req, res) => {
   }
 
   User.find({ $or: [
-    { email: { $regex: '.*' + req.params.email + '.*' } },
-    { username: { $regex: '.*' + req.params.email + '.*' } }
+    { email: { $regex: '.*' + req.params.email + '.*', $ne: req.user.email } },
+    { username: { $regex: '.*' + req.params.email + '.*', $ne: req.user.username } }
   ]})
   .then(users => {
     if (users.length <= 0) {
       logger.info('Didn\'t find any user for these refs');
       return res.status(204).send();
     }
-    
+    logger.info(`${users.length} user matching`);
+
     logger.info(`${users.length} user matching`);
     return res.status(200).json({ status: 'OK', users: users });
   })

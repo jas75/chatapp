@@ -1,0 +1,62 @@
+[33m54ec780[m[33m ([m[1;36mHEAD -> [m[1;32mfeature/dashboard-ajax[m[33m)[m #11 create forms and user service to get users
+[33m82e1024[m #11 create several new components and set reactive forms
+[33m605f9df[m[33m ([m[1;31morigin/develop[m[33m, [m[1;32mdevelop[m[33m)[m #8 Refactor chatcoomponent to dashboard and new css because old one was bad
+[33m23e9764[m[33m ([m[1;31morigin/feature/contacts[m[33m, [m[1;32mfeature/contacts[m[33m)[m #9 Last clean on this branch
+[33md251396[m #9 fix logger.err
+[33mb9cad01[m #9 add test to accept friend request
+[33m680a10c[m Custom error logger
+[33mce51d9f[m lint
+[33m777ff77[m #9 Refactor everything to create a friend request system, change model add functions and correct tests
+[33mb9ae875[m #9 Refactoring for adding friend feature
+[33me92ea14[m #9 lint
+[33m0cf1430[m #9 add logs
+[33ma125648[m # Create a route to list several or one user -- of course I added  tests
+[33m23b247e[m #9 Add&Remove a contact -- also add tests
+[33m0f1474a[m[33m ([m[1;32mfeature/chatcomponent[m[33m)[m #8 add chatcomponent html&css non-responsive structure
+[33mecb8938[m remove useless logger
+[33mcb8a76a[m fix auth problem
+[33m13f5a1b[m Add load spinners
+[33ma0d9e05[m lint tests
+[33m4088a1c[m #5 display errors on registerform
+[33mcb78f3a[m #5 display errors on login form
+[33me9eb2d2[m Better http error handling
+[33mfa6f5e1[m[33m ([m[1;31morigin/feature/reactive-forms[m[33m, [m[1;32mfeature/reactive-forms[m[33m)[m lint
+[33m08ce71c[m lint
+[33m656c5a7[m #5 add tests to the authguard and correct some of the auth service code
+[33m7f51b8a[m #5 routes handle username
+[33m683bbed[m #5 Correct identity interface
+[33m568bf44[m #7 login route returns user
+[33m55c1116[m #5 Add interceptors, authguard, interfaces and chat component
+[33m3853365[m #5 register and login: ok
+[33m4adf506[m #5 Add loginform tests
+[33m66a6de4[m #5 Correct password mismatch function & add validation tests
+[33m84cbb9b[m #5 Add form validation
+[33m7e52c85[m Correct package.json script
+[33m4823ae5[m Correct test
+[33me5cfaf4[m log everywhere
+[33m7590e4d[m Rename tests
+[33m1e52c32[m Create helpers, add some refactoring and lint
+[33m9b18f19[m[33m ([m[1;31morigin/feature/eslint[m[33m, [m[1;32mfeature/eslint[m[33m)[m #4 eslint integration
+[33mbeba7af[m[33m ([m[1;31morigin/feature/passport[m[33m, [m[1;32mfeature/passport[m[33m)[m Add a logger, a delete user route, and tests on mongo
+[33mf010fcc[m Add some more tests
+[33m883acc1[m lint
+[33m69bd1d0[m lint
+[33mceef203[m #3 Set up test for auth
+[33m34ed920[m #3 Add route semantic, logging and some validations to mongoose
+[33mbf90fa8[m #3 Set pasport up, create jwt strategy and auth controller
+[33ma61e5c7[m #3 Second refactor and connection to mlab set
+[33m795c484[m First back refactoring
+[33m14f5d54[m #3 Add correct dependencies to node
+[33mfa29fcc[m #2 add  form tests
+[33m1dd7f5e[m #2 add registerform properties
+[33mc580ee7[m #2 add a Register form
+[33m0c3f5b4[m #2 add a register form and some graphic differences
+[33me922b94[m #2 Add logic to login form
+[33me8d0c66[m #2 Create form and include useful links
+[33ma84587d[m #2 Import Reactive forms & add new background
+[33m1e35a81[m #1 Bootstrap 4 integreation
+[33m2cf06ce[m #1 set up routes and add home cmp
+[33m7853749[m #1 More commands in package.json
+[33mc0c7bdb[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m CLI to use npm run dev launch both client and server in local environment
+[33m558e83f[m Refactoring & Angular integration
+[33m6a6ff02[m first commit

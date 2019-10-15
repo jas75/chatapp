@@ -32,6 +32,8 @@ export class UserService {
     .pipe(tap(res => {
       if (res) {
         return res.users;
+      } else {
+        return null;
       }
     }),
       catchError(e => {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user/user.service';
+import { User } from 'src/app/interfaces/identity';
 
 @Component({
   selector: 'app-add-contact',
@@ -11,6 +12,8 @@ export class AddContactComponent implements OnInit {
 
 
   searchForm: FormGroup;
+
+  users: User[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -34,10 +37,15 @@ export class AddContactComponent implements OnInit {
   onInputSearchChange() {
     this.searchForm.valueChanges.subscribe(value => {
       if (this.searchForm.valid) {
-        // cree service qi fait appel http vers get api/conatct/
         this.userService.getUsersSuggestions(value.queryParams).subscribe(res => {
-          console.log(res)
-        })
+          if (res === null) {
+            this.users = [];
+          } else {
+            this.users = res.users;
+          }
+        });
+      } else {
+        this.users = [];
       }
     });
   }
