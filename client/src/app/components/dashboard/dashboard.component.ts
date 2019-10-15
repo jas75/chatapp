@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 })
 export class DashboardComponent implements OnInit {
 
-  user;ww
+  user;
 
   constructor(
     private authService: AuthService
