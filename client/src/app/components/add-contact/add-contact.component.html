@@ -25,13 +25,13 @@
     <small *ngIf="users">{{users.length}} {{users.length <=1 ? 'result' : 'results'}} for {{searchForm.get('queryParams').value}}</small>
     <div class="row">
       
-        <div class="col-sm-4 py-2" *ngFor="let user of users">
+        <div class="col-sm-4 py-2" *ngFor="let card of cards">
             <div class="card h-100">
                 <img src="http://emilcarlsson.se/assets/donnapaulsen.png" alt="" class="card-img-top">
                 <div class="card-body">
-                    <h3 class="card-title">{{user.username}}</h3>
-                    <p class="card-text"><small>{{user.email}}</small></p>
-                    <button [disabled]="" class="btn btn-outline-primary">ADD FRIEND</button>
+                    <h3 class="card-title">{{card.user.username}}</h3>
+                    <p class="card-text"><small>{{card.user.email}}</small></p>
+                    <button [disabled]="card.relation" class="btn btn-outline-primary" (click)="sendFriendRequest(card.user._id)">ADD FRIEND</button>
                 </div>
             </div>
         </div>
