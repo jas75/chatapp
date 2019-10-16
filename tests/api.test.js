@@ -42,7 +42,7 @@ describe('API', (done) => {
 
     describe('Users', (done) => {
         // Has to have at least two documents in db
-        it('should list several users info -> 200 OK', done => {
+        it('should list 2 users -> 200 OK', done => {
             user.get('/api/user/test')
             .set('Authorization', 'Bearer ' + jwtToken)
             .end((err, response) => {
@@ -50,7 +50,7 @@ describe('API', (done) => {
                     logger.error(err);
                 } else {
                     expect(response.status).to.equal(200);
-                    expect(response.body.users).to.have.lengthOf(3);
+                    expect(response.body.users).to.have.lengthOf(2);
                     done();
                 }
             });
@@ -58,8 +58,8 @@ describe('API', (done) => {
 
 
         // must have only one document name test in db
-        it('should list just one user info -> 200 OK', done => {
-            user.get('/api/user/test1')
+        it('should list just one user -> 200 OK', done => {
+            user.get('/api/user/test2')
             .set('Authorization', 'Bearer ' + jwtToken)
             .end((err, response) => {
                 if (err) {
@@ -191,5 +191,20 @@ describe('API', (done) => {
             }
         });
     });
+
+    it('should return nothing -> 204 No Content', (done) => {
+        user.get('/api/contact/' + userCredentials2.id)
+        .set('Authorization', 'Bearer ' + jwtToken)
+        .end((err, response) => {
+            if (err) {
+                logger.error(err);
+            } else {
+                expect(response.status).to.equal(204);
+                done();
+            }
+        });
+    });
+
+
   });
 });

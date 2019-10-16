@@ -224,8 +224,10 @@ exports.getRelationshipByIds = (req, res) => {
   ]})
   .then(relationship => {
     if (!relationship) {
+      logger.warn(`Did't find any Relationship`);
       return res.status(204).send();
     }
+    logger.info(`Found Relationship ${relationship._id}`);
     return res.status(200).json({ status: 'OK', relationship: relationship });
   })
   .catch(err => {
