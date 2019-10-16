@@ -211,3 +211,25 @@ exports.acceptFriend = (req, res) => {
   });
 
 };
+
+exports.getRelationshipByIds = (req, res) => {
+  if (!req.params.id) {
+    loggger.warn('Missing payload parameters');
+    return res.status(400).json({ status: 'Bad Request', msg: 'Missing id '});
+  }
+
+  Relationship.findOne({ $or: [
+    { sender: req.user._id, recipient: req.params.id },
+    { sender: req.params.id, recipient: req.user._id }
+  ]})
+  .then(relationship => {
+    if (!relationship) {
+      return res.status(204).send();
+    }
+    return res.status(200).json({ status: 'OK', relationship: relationship });
+  })
+  .catch(err => {
+    logger.error(err);
+    return res.status(400).json({ status: 'Bad Request', msg: 'Something went wrong'});
+  });
+};

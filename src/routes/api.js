@@ -44,9 +44,11 @@ router.get('/user/:email', passport.authenticate('jwt', { session: false }), con
 router.post('/login', authController.loginUser);
 
 
-// @route   GET /api/contact
-// @des     Get all current user friends
+// @route   GET /api/contact/:id
+// @des     Get relationships by given id and current user id
 // @access  Auth
+router.get('/contact/:id', passport.authenticate('jwt', { session: false }), contactController.getRelationshipByIds);
+
 
 // @route   POST /api/contact
 // @des     Send a friend request
