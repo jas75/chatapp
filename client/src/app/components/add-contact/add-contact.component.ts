@@ -46,21 +46,11 @@ export class AddContactComponent implements OnInit {
             this.cards = [];
             usersugg.users.forEach(user => {
               this.contactService.getUserRelationshipById(user._id).subscribe(relation => {
-                let value;
+                let value: boolean;
                 relation ? value = true : value = false;
                 this.cards.push({ user, relation: value});
               });
             });
-
-            // this.cards = usersugg.users.map(user => {
-            //   await this.contactService.getUserRelationshipById(user._id).subscribe(relation => {
-            //     let value;
-            //     relation ? value = true : value = false;
-
-            //   });
-            //   return { user, relation: value };
-            // });
-            //console.log(this.cards);
           }
         });
       } else {
