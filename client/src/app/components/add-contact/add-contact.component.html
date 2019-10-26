@@ -22,7 +22,7 @@
 <div class="container-fluid" style="height: 95vh; overflow-y: scroll;">
 
 
-    <small *ngIf="users">{{users.length}} {{users.length <=1 ? 'result' : 'results'}} for {{searchForm.get('queryParams').value}}</small>
+    <small *ngIf="cards">{{cards.length}} {{cards.length <=1 ? 'result' : 'results'}} for {{searchForm.get('queryParams').value}}</small>
     <div class="row">
       
         <div class="col-sm-4 py-2" *ngFor="let card of cards">

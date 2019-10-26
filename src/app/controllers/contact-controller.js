@@ -214,7 +214,7 @@ exports.acceptFriend = (req, res) => {
 
 exports.getRelationshipByIds = (req, res) => {
   if (!req.params.id) {
-    loggger.warn('Missing payload parameters');
+    logger.warn('Missing payload parameters');
     return res.status(400).json({ status: 'Bad Request', msg: 'Missing id '});
   }
 
