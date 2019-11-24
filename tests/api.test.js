@@ -41,9 +41,24 @@ describe('API', (done) => {
 
 
     describe('Users', (done) => {
+
+        it('should list test2 infos -> 200 OK', (done) => {
+            user.get('/api/user/5d9cd2200c1b5d249920b1d6')
+            .set('Authorization', 'Bearer ' + jwtToken)
+            .end((err, response) => {
+                if (err) {
+                    logger.error(err);
+                } else {
+                    expect(response.body).to.exist;
+                    expect(response.status).to.equal(200);
+                    done();
+                }
+            });
+        });
+
         // Has to have at least two documents in db
         it('should list 2 users -> 200 OK', done => {
-            user.get('/api/user/test')
+            user.get('/api/user/suggestions/test')
             .set('Authorization', 'Bearer ' + jwtToken)
             .end((err, response) => {
                 if (err) {
@@ -59,7 +74,7 @@ describe('API', (done) => {
 
         // must have only one document name test in db
         it('should list just one user -> 200 OK', done => {
-            user.get('/api/user/test2')
+            user.get('/api/user/suggestions/test2')
             .set('Authorization', 'Bearer ' + jwtToken)
             .end((err, response) => {
                 if (err) {
@@ -73,7 +88,7 @@ describe('API', (done) => {
         });
 
         it('should return nothing -> 204 No Content', done => {
-            user.get('/api/user/tessst')
+            user.get('/api/user/suggestions/tessst')
             .set('Authorization', 'Bearer ' + jwtToken)
             .end((err, response) => {
                 if (err) {
@@ -101,6 +116,19 @@ describe('API', (done) => {
                 logger.error(err);
             } else {
                 expect(response.status).to.equal(201);
+                done();
+            }
+        });
+    });
+
+    it('should list test1 relationships -> 200 OK', (done) => {
+        user.get('/api/contact')
+        .set('Authorization', 'Bearer ' + jwtToken)
+        .end((err, response) => {
+            if (err) {
+                logger.error(err);
+            } else {
+                expect(response.status).to.equal(200);
                 done();
             }
         });
@@ -204,7 +232,5 @@ describe('API', (done) => {
             }
         });
     });
-
-
   });
 });

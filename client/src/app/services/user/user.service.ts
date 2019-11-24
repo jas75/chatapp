@@ -18,7 +18,7 @@ export class UserService {
     private router: Router
   ) { }
 
-  createHttpHeaders() {
+  private createHttpHeaders() {
     return {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
@@ -28,7 +28,7 @@ export class UserService {
   }
 
   getUsersSuggestions(params: string): Observable<UsersResponse> {
-    return this.http.get<UsersResponse>(this.url + '/api/user/' + params, this.createHttpHeaders())
+    return this.http.get<UsersResponse>(this.url + '/api/user/suggestions/' + params, this.createHttpHeaders())
     .pipe(tap(res => {
       if (res) {
         return res.users;
@@ -40,6 +40,16 @@ export class UserService {
         return throwError(e);
       })
     );
+  }
+
+  getUserById(id): Observable<UsersResponse> {
+    return this.http.get<UsersResponse>(this.url + '/api/user/' + id, this.createHttpHeaders())
+    .pipe(tap(res => {
+      return res;
+    }),
+    catchError(err => {
+      return throwError(err);
+    }));
   }
 
 }

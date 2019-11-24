@@ -18,9 +18,10 @@ router.get('/special', passport.authenticate('jwt', { session: false }), (req, r
   return res.json({ msg: 'Hey' + req.user.email });
 });
 
-// @route   GET /api/user
-// @des     Get current user
+// @route   GET /api/user/:id
+// @des     Get user info by id
 // @access  Auth
+router.get('/user/:id', authController.getUserById);
 
 // @route   POST /api/user
 // @des     Register a user
@@ -33,10 +34,10 @@ router.post('/user', authController.registerUser);
 router.delete('/user', passport.authenticate('jwt', { session: false }), authController.deleteUser);
 
 
-// @route   GET /api/user/:email
+// @route   GET /api/user/suggestions/:email
 // @des     Returns an array of one or several users suggestions
 // @access  Auth
-router.get('/user/:email', passport.authenticate('jwt', { session: false }), contactController.getOneOrManyUsers);
+router.get('/user/suggestions/:email', passport.authenticate('jwt', { session: false }), contactController.getOneOrManyUsers);
 
 // @route   POST /api/login
 // @des     Login user
@@ -44,8 +45,13 @@ router.get('/user/:email', passport.authenticate('jwt', { session: false }), con
 router.post('/login', authController.loginUser);
 
 
+// @route   GET /api/contact
+// @des     Get all user's relationships 
+// @access  Auth
+router.get('/contact', passport.authenticate('jwt', { session: false }), contactController.getUserRelationShips);
+
 // @route   GET /api/contact/:id
-// @des     Get relationships by given id and current user id
+// @des     Get relationship by given id and current user id
 // @access  Auth
 router.get('/contact/:id', passport.authenticate('jwt', { session: false }), contactController.getRelationshipByIds);
 

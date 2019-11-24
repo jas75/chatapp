@@ -112,6 +112,7 @@ exports.removeContact = (req, res) => {
   });
 };
 
+
 exports.getOneOrManyUsers = (req, res) => {
   if (!req.params.email) {
     logger.warn('Missing parameter');
@@ -232,6 +233,25 @@ exports.getRelationshipByIds = (req, res) => {
   })
   .catch(err => {
     logger.error(err);
+    return res.status(400).json({ status: 'Bad Request', msg: 'Something went wrong'});
+  });
+};
+
+exports.getUserRelationShips = (req, res) => {
+  Relationship.find({ $or: [
+    { sender: req.user._id },
+    { recipient: req.user._id }
+  ]})
+  .then(relationships => {
+    if (!relationships) {
+      logger.warn('Didn\'t find any relationship');
+      return res.status(204).send();
+    }
+    logger.info(`Found Relationship: ${relationships}`);
+    return res.status(200).json({ status: 'OK', relationships: relationships });
+  })
+  .catch(err => {
+    logger.err(err);
     return res.status(400).json({ status: 'Bad Request', msg: 'Something went wrong'});
   });
 };

@@ -54,5 +54,6 @@ connection.on('error', (err) => {
   console.log('MongoDb connection error. Please make sure MongoDB is running.' + err);
   process.exit();
 });
+//console.log(app);
 
 module.exports = app;

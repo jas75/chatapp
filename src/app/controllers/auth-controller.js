@@ -91,3 +91,19 @@ exports.deleteUser = (req, res) => {
     return res.status(204).json({ msg: 'Your account was deleted :)' });
   });
 };
+
+exports.getUserById = (req, res) => {
+  User.findOne({ _id: req.params.id })
+  .then(user => {
+    if (!user) {
+      logger.warn('No user found');
+      return res.status(204).send();
+    }
+    logger.info(`user with id ${req.params.id}: ${user}`);
+    return res.status(200).json({ status: 'OK', user: user });
+  })
+  .catch(err => {
+    logger.error(err);
+    return res.status(400).json({ status: 'Bad Request', msg: 'Something went wrong'});
+  });
+};

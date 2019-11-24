@@ -4,3 +4,8 @@ export interface Relationship {
     recipient: string;
     areFriends: boolean;
 }
+
+export interface RelationshipResponse {
+    status: string;
+    relationships: Relationship[]
+}

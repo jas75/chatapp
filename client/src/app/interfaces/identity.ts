@@ -11,5 +11,6 @@ export interface Identity {
 
 export interface UsersResponse {
     status: string;
-    users: User[];
+    users?: User[];
+    user?: User;
 }

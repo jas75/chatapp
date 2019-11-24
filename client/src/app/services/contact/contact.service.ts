@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { tap, catchError } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
-import { Relationship } from 'src/app/interfaces/relationship';
+import { Relationship, RelationshipResponse } from 'src/app/interfaces/relationship';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +40,15 @@ export class ContactService {
 
   getUserRelationshipById(id): Observable<Relationship> {
     return this.http.get<Relationship>(this.url + '/api/contact/' + id, this.createHttpHeaders()).pipe(tap(res => {
+      return res;
+    }),
+    catchError(err => {
+      return throwError(err);
+    }));
+  }
+
+  getUserRelationships(): Observable<RelationshipResponse> {
+    return this.http.get<RelationshipResponse>(this.url + '/api/contact', this.createHttpHeaders()).pipe(tap(res => {
       return res;
     }),
     catchError(err => {

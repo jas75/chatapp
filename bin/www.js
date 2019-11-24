@@ -8,6 +8,8 @@ const app = require('../app');
 const debug = require('debug')('chatapp:server');
 const http = require('http');
 
+
+
 /**
  * Get port from environment and store in Express.
  */
@@ -20,6 +22,14 @@ app.set('port', port);
  */
 
 const server = http.createServer(app);
+
+
+/*
+ * Create Socket Server  
+*/
+const socketApi = require('../src/helpers/socketApi');
+const io = socketApi.io;
+io.attach(server);
 
 /**
  * Listen on provided port, on all network interfaces.
