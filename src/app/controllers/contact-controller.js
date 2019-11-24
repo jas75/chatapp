@@ -1,5 +1,6 @@
 const User = require('./../models/user');
 const Relationship = require('./../models/relationship');
+const Message = require('../models/message');
 const logger = require('./../../../utils/logger');
 
 exports.sendFriendRequest = (req, res) => {
@@ -24,10 +25,17 @@ exports.sendFriendRequest = (req, res) => {
         return res.status(409).json({ status: 'Conflict', msg: 'Relation already exists' });
       }
 
+      const message = new Message({
+        sender: req.user._id,
+        content: `Hey, would you like to be my friend ?`,
+        dateCreation: Date.now()
+      });
+
       const relationship = new Relationship({
         sender: req.user._id,
         recipient: req.body.recipient,
-        areFriends: false
+        areFriends: false ,
+        messages: message
       });
 
       relationship.save()

@@ -23,11 +23,13 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.contactService.getUserRelationships().subscribe(res => {
       res.relationships.forEach(relationship => {
-        const id = JSON.parse(localStorage.getItem('user'))._id === relationship.sender ? relationship.recipient : relationship.sender ;
+        const id = JSON.parse(localStorage.getItem('user'))._id === relationship.sender ? relationship.recipient : relationship.sender;
         this.userService.getUserById(id).subscribe(response => {
           this.contacts.push({relationship, user: response.user});
         });
       });
+
+      console.log(this.contacts);
     });
   }
 
