@@ -41,6 +41,7 @@ export class ChatComponent implements OnInit {
 
     this.contactService.acceptFriendRequest(sender).subscribe(res => {
       this.isFriendRequest = false;
+      this.room.relationship.areFriends = true;
       console.log(res);
     });
   }

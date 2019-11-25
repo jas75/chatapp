@@ -5,6 +5,7 @@ import { UserService } from 'src/app/services/user/user.service';
 import { User } from 'src/app/interfaces/identity';
 import { Relationship } from 'src/app/interfaces/relationship';
 import { Router } from '@angular/router';
+import { WebsocketService } from 'src/app/services/websocket/websocket.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +18,8 @@ export class DashboardComponent implements OnInit {
     private authService: AuthService,
     private contactService: ContactService,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private wsService: WebsocketService
   ) { }
 
   currentUser: User = JSON.parse(localStorage.getItem('user'));
@@ -26,6 +28,7 @@ export class DashboardComponent implements OnInit {
   room;
 
   ngOnInit() {
+    this.wsService.sendMessage('hey');
     this.getUserRelationships();
   }
 
