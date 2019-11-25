@@ -221,6 +221,7 @@ exports.acceptFriend = (req, res) => {
 
 };
 
+// get one relationship matching with two user ids
 exports.getRelationshipByIds = (req, res) => {
   if (!req.params.id) {
     logger.warn('Missing payload parameters');
@@ -236,7 +237,7 @@ exports.getRelationshipByIds = (req, res) => {
       logger.warn(`Did't find any Relationship`);
       return res.status(204).send();
     }
-    logger.info(`Found Relationship ${relationship._id}`);
+    logger.info(`Relationship exists: ${relationship._id}`);
     return res.status(200).json({ status: 'OK', relationship: relationship });
   })
   .catch(err => {
@@ -245,6 +246,7 @@ exports.getRelationshipByIds = (req, res) => {
   });
 };
 
+// get all relationships whether he is the sender or recipient
 exports.getUserRelationShips = (req, res) => {
   Relationship.find({ $or: [
     { sender: req.user._id },
@@ -255,7 +257,7 @@ exports.getUserRelationShips = (req, res) => {
       logger.warn('Didn\'t find any relationship');
       return res.status(204).send();
     }
-    logger.info(`Found Relationship: ${relationships}`);
+    logger.info(`Current user has ${relationships.length}  relationships`);
     return res.status(200).json({ status: 'OK', relationships: relationships });
   })
   .catch(err => {
