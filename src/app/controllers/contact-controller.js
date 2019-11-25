@@ -59,7 +59,7 @@ exports.removeContact = (req, res) => {
     return res.status(401).json({ msg: 'Forbidden' });
   }
 
-  if (!req.body.idToDelete) {
+  if (!req.params.sender_id) {
     logger.warn('Missing parameters');
     return res.status(400).json({ msg: 'Something went wrong' });
   }
@@ -73,8 +73,8 @@ exports.removeContact = (req, res) => {
     });
     doc.save()
     .then(() => {
-      logger.info(`Searching for ${req.body.idToDelete}`);
-      User.findOne({ _id: req.body.idToDelete })
+      logger.info(`Searching for ${req.params.sender_id}`);
+      User.findOne({ _id: req.params.sender_id })
       .then(doc2 => {
         logger.info(`Found ${doc2.email}`);
         doc2.friends = doc2.friends.filter(el => {
@@ -83,15 +83,15 @@ exports.removeContact = (req, res) => {
         doc2.save()
         .then(() => {
           Relationship.deleteOne({ $or: [
-            { sender: req.user._id, recipient: req.body.idToDelete },
-            { sender: req.body.idToDelete, recipient: req.user._id }
+            { sender: req.user._id, recipient: req.params.sender_id },
+            { sender: req.params.sender_id, recipient: req.user._id }
           ]})
           .then(relation => {
             if (relation.deletedCount > 0) {
-              logger.info(`${req.user._id} blocked ${req.body.idToDelete}`);
+              logger.info(`${req.user._id} blocked ${req.params.sender_id}`);
               return res.status(200).json({ status: "Ok", msg: 'Connection successfullly removed'});
             }
-            logger.warn(`${req.user._id} and ${req.body.idToDelete} are not friends`);
+            logger.warn(`${req.user._id} and ${req.params.sender_id} are not friends`);
             return res.status(400).json({ status: 'Bad Request', msg: 'Relationship does not exist'});
           })
           .catch(err => {

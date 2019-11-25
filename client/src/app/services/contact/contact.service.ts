@@ -55,4 +55,22 @@ export class ContactService {
       return throwError(err);
     }));
   }
+
+  acceptFriendRequest(sender: any) {
+    return this.http.post(this.url + '/api/friend-request/confirm', sender, this.createHttpHeaders()).pipe(tap(res => {
+      return res;
+    }),
+    catchError(err => {
+      return throwError(err);
+    }));
+  }
+
+  denyFriendRequest(senderid: string) {
+    return this.http.delete(this.url + '/api/friend-request/deny/' + senderid, this.createHttpHeaders()).pipe(tap(res => {
+      return res;
+    }),
+    catchError(err => {
+      return throwError(err);
+    }));
+  }
 }

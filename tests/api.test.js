@@ -103,7 +103,7 @@ describe('API', (done) => {
     });
 
   describe('Contact', (done) => {
-    it('should send a friend request -> 201 Created', (done) => {
+    it('test1 should send a friend request to test2 -> 201 Created', (done) => {
         const relationship = {
             sender: userId,
             recipient: userCredentials2.id
@@ -169,7 +169,7 @@ describe('API', (done) => {
                 };
                 
                 user
-                .post('/api/contact/confirm')
+                .post('/api/friend-request/confirm')
                 .set('Authorization', 'Bearer ' + jwtToken)
                 .send(sender)
                 .end((err, response) => {
@@ -185,11 +185,11 @@ describe('API', (done) => {
         });     
     });
 
-    it('should remove a contact -> 200 OK', (done) => {
+    it('should deny a friend request and delete the Relationship -> 200 OK', (done) => {
         const relationship = {
-            idToDelete: userCredentials2.id
+            sender_id: userCredentials2.id
         };
-        user.delete('/api/contact')
+        user.delete(`/api/friend-request/deny/${relationship.sender_id}`)
         .send(relationship)
         .set('Authorization', 'Bearer ' + jwtToken)
         .end((err, response) => {
@@ -204,9 +204,9 @@ describe('API', (done) => {
     
     it('should not remove anything because relationship does\'nt exist -> 400 Bad Request', (done) => {
         const relationship = {
-            idToDelete: userCredentials2.id
+            sender_id: userCredentials2.id
         };
-        user.delete('/api/contact')
+        user.delete(`/api/friend-request/deny/${relationship.sender_id}`)
         .set('Authorization', 'Bearer ' + jwtToken)
         .send(relationship)
         .end((err, response) => {

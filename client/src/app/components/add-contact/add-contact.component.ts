@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user/user.service';
 import { User } from 'src/app/interfaces/identity';
@@ -11,6 +11,8 @@ import { ContactService } from 'src/app/services/contact/contact.service';
 })
 export class AddContactComponent implements OnInit {
 
+
+  @Output() fqSent: any = new EventEmitter<any>();
 
   searchForm: FormGroup;
 
@@ -66,7 +68,11 @@ export class AddContactComponent implements OnInit {
 
     this.contactService.sendFriendRequestTo(recipient).subscribe(res => {
       if (res.status === 'OK') {
-        // disable button
+
+        //Sent to parent coomponent to reload Relationships
+        this.fqSent.emit(null);
+        
+        // disable ADD FRIEND button
         this.cards = this.cards.map(el => {
           if (el.user._id === id) {
             el.relation = true;

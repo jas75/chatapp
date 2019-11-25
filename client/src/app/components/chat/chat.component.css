@@ -1,0 +1,12 @@
+.friend-request p {
+    float: right;
+}
+
+.friend-request p:hover {
+    cursor: pointer;
+}
+
+.friend-request p i {
+    font-size: 1.7em;
+    padding-right: 10px;
+}

@@ -61,15 +61,15 @@ router.get('/contact/:id', passport.authenticate('jwt', { session: false }), con
 // @access  Auth
 router.post('/contact', passport.authenticate('jwt', { session: false }), contactController.sendFriendRequest);
 
-// @route   DELETE /api/contact
-// @des     Remove friendship
+// @route   DELETE /api/friend-request/deny/:sender_id
+// @des     Deny a friend request by deleting the relationship 
 // @access  Auth
-router.delete('/contact', passport.authenticate('jwt', { session: false }), contactController.removeContact);
+router.delete('/friend-request/deny/:sender_id', passport.authenticate('jwt', { session: false }), contactController.removeContact);
 
-// @route   POST /api/contact/confirm
+// @route   POST /api/friend-request/confirm
 // @des     Accept friend request
 // @access  Auth
-router.post('/contact/confirm', passport.authenticate('jwt', { session: false }), contactController.acceptFriend);
+router.post('/friend-request/confirm', passport.authenticate('jwt', { session: false }), contactController.acceptFriend);
 
 
 module.exports = router;

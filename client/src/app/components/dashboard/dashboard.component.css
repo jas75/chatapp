@@ -313,6 +313,7 @@
     border: none;
     background: #32465a;
     color: #f5f5f5;
+    width: 100%;
   }
   #frame #sidepanel #search input:focus {
     outline: none;
@@ -500,7 +501,21 @@
       display: none;
     }
   }
-  #frame .content {
+
+  #whatsup {
+    border-top: 1px solid #32465a;
+    border-bottom: 1px solid #32465a;
+    font-weight: 300;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  #whatsup:hover{
+    background-color: #243140;
+    cursor: pointer;
+  }
+
+  :host ::ng-deep #frame .content {
     float: right;
     width: 60%;
     height: 100%;
@@ -508,45 +523,45 @@
     position: relative;
   }
   @media screen and (max-width: 735px) {
-    #frame .content {
+    :host ::ng-deep #frame .content {
       width: calc(100% - 58px);
       min-width: 300px !important;
     }
   }
   @media screen and (min-width: 900px) {
-    #frame .content {
+    :host ::ng-deep #frame .content {
       width: calc(100% - 340px);
     }
   }
-  #frame .content .contact-profile {
+  :host ::ng-deep #frame .content .contact-profile {
     width: 100%;
     height: 60px;
     line-height: 60px;
     background: #f5f5f5;
   }
-  #frame .content .contact-profile img {
+  :host ::ng-deep #frame .content .contact-profile img {
     width: 40px;
     border-radius: 50%;
     float: left;
     margin: 9px 12px 0 9px;
   }
-  #frame .content .contact-profile p {
+  :host ::ng-deep #frame .content .contact-profile p {
     float: left;
   }
-  #frame .content .contact-profile .social-media {
+  :host ::ng-deep #frame .content .contact-profile .social-media {
     float: right;
   }
-  #frame .content .contact-profile .social-media i {
+  :host ::ng-deep #frame .content .contact-profile .social-media i {
     margin-left: 14px;
     cursor: pointer;
   }
-  #frame .content .contact-profile .social-media i:nth-last-child(1) {
+  :host ::ng-deep #frame .content .contact-profile .social-media i:nth-last-child(1) {
     margin-right: 20px;
   }
-  #frame .content .contact-profile .social-media i:hover {
+  :host ::ng-deep #frame .content .contact-profile .social-media i:hover {
     color: #435f7a;
   }
-  #frame .content .messages {
+  :host ::ng-deep #frame .content .messages {
     height: auto;
     min-height: calc(100% - 93px);
     max-height: calc(100% - 93px);
@@ -554,18 +569,18 @@
     overflow-x: hidden;
   }
   @media screen and (max-width: 735px) {
-    #frame .content .messages {
+    :host ::ng-deep #frame .content .messages {
       max-height: calc(100% - 105px);
     }
   }
-  #frame .content .messages::-webkit-scrollbar {
+  :host ::ng-deep #frame .content .messages::-webkit-scrollbar {
     width: 8px;
     background: transparent;
   }
-  #frame .content .messages::-webkit-scrollbar-thumb {
+  :host ::ng-deep #frame .content .messages::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.3);
   }
-  #frame .content .messages ul li {
+  :host ::ng-deep #frame .content .messages ul li {
     display: inline-block;
     clear: both;
     float: left;
@@ -573,30 +588,30 @@
     width: calc(100% - 25px);
     font-size: 0.9em;
   }
-  #frame .content .messages ul li:nth-last-child(1) {
+  :host ::ng-deep #frame .content .messages ul li:nth-last-child(1) {
     margin-bottom: 20px;
   }
-  #frame .content .messages ul li.sent img {
+  :host ::ng-deep #frame .content .messages ul li.sent img {
     margin: 6px 8px 0 0;
   }
-  #frame .content .messages ul li.sent p {
+  :host ::ng-deep #frame .content .messages ul li.sent p {
     background: #435f7a;
     color: #f5f5f5;
   }
-  #frame .content .messages ul li.replies img {
+  :host ::ng-deep #frame .content .messages ul li.replies img {
     float: right;
     margin: 6px 0 0 8px;
   }
-  #frame .content .messages ul li.replies p {
+  :host ::ng-deep #frame .content .messages ul li.replies p {
     background: #f5f5f5;
     float: right;
   }
-  #frame .content .messages ul li img {
+  :host ::ng-deep #frame .content .messages ul li img {
     width: 22px;
     border-radius: 50%;
     float: left;
   }
-  #frame .content .messages ul li p {
+  :host ::ng-deep #frame .content .messages ul li p {
     display: inline-block;
     padding: 10px 15px;
     border-radius: 20px;
@@ -604,20 +619,20 @@
     line-height: 130%;
   }
   @media screen and (min-width: 735px) {
-    #frame .content .messages ul li p {
+    :host ::ng-deep #frame .content .messages ul li p {
       max-width: 300px;
     }
   }
-  #frame .content .message-input {
+  :host ::ng-deep #frame .content .message-input {
     position: absolute;
     bottom: 0;
     width: 100%;
     z-index: 99;
   }
-  #frame .content .message-input .wrap {
+  :host ::ng-deep #frame .content .message-input .wrap {
     position: relative;
   }
-  #frame .content .message-input .wrap input {
+  :host ::ng-deep #frame .content .message-input .wrap input {
     font-family: "proxima-nova",  "Source Sans Pro", sans-serif;
     float: left;
     border: none;
@@ -627,43 +642,41 @@
     color: #32465a;
   }
   @media screen and (max-width: 735px) {
-    #frame .content .message-input .wrap input {
+    :host ::ng-deep #frame .content .message-input .wrap input {
       padding: 15px 32px 16px 8px;
     }
   }
-  #frame .content .message-input .wrap input:focus {
+  :host ::ng-deep #frame .content .message-input .wrap input:focus {
     outline: none;
   }
-  #frame .content .message-input .wrap .attachment {
-    /* position: absolute;
-    right: 60px; */
+  :host ::ng-deep #frame .content .message-input .wrap .attachment {
+     /* position: absolute;
+    right: 60px;  */
     z-index: 4;
     font-size: 1.1em;
     color: #435f7a;
     opacity: 0.7;
-    cursor: pointer;
+    background: #f5f5f5;
+    color: #32465a;
   }
  
-  #frame .content .message-input .wrap .attachment:hover {
+  /* :host ::ng-deep #frame .content .message-input .wrap .attachment:hover {
     opacity: 1;
-  }
-  #frame .content .message-input .wrap button {
+  } */
+  :host ::ng-deep #frame .content .message-input .wrap button {
     float: right;
     border: none;
     width: 50px;
     padding: 12px 0;
-    cursor: pointer;
     background: #32465a;
     color: #f5f5f5;
   }
   @media screen and (max-width: 735px) {
-    #frame .content .message-input .wrap button {
+    :host ::ng-deep #frame .content .message-input .wrap button {
       padding: 16px 0;
     }
   }
-  #frame .content .message-input .wrap button:hover {
-    background: #435f7a;
-  }
-  #frame .content .message-input .wrap button:focus {
+  
+  :host ::ng-deep #frame .content .message-input .wrap button:focus {
     outline: none;
   }

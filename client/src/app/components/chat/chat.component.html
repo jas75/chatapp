@@ -1,0 +1,39 @@
+
+
+    <div>
+        <div class="contact-profile">
+            <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+            <p>{{ room.user.username }}</p>
+            <div class="social-media">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                 <i class="fa fa-instagram" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div class="messages" style="width: 100%; overflow-y: scroll; height: 85vh;">
+            <ul>
+                <li [ngClass]="{ 'sent': message.sender == currentUser._id, 'replies': message.sender != currentUser._id}" class="sent" *ngFor="let message of room.relationship.messages">
+                    <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
+                    <p>{{ message.content }}</p>
+                </li>
+
+                <li class="friend-request" *ngIf="isFriendRequest">
+                    <p>
+
+                        <i style="color:green;" (click)="acceptFriendRequest()" class="fa fa-check"></i>
+                        <i style="color: red;" (click)="denyFriendRequest()" class="fa fa-times"></i>
+                    </p>
+                </li>
+            </ul>
+        </div>
+        <div class="message-input">
+            <div class="wrap" style="display:  flex;">
+            <input *ngIf="!room.relationship.areFriends" [disabled]="true" type="text" placeholder="You must be friends to talk with this person" />
+            <input *ngIf="room.relationship.areFriends" type="text" placeholder="Write your message..." />
+            <button [disabled]="!room.relationship.areFriends" class="attachment">
+                <i class="fa fa-paperclip" aria-hidden="true"></i>
+            </button>
+            <button [disabled]="!room.relationship.areFriends" class=""><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+            </div>
+        </div>
+    </div>

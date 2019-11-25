@@ -4,6 +4,7 @@ import { ContactService } from 'src/app/services/contact/contact.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { User } from 'src/app/interfaces/identity';
 import { Relationship } from 'src/app/interfaces/relationship';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,12 +16,26 @@ export class DashboardComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private contactService: ContactService,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) { }
 
+  currentUser: User = JSON.parse(localStorage.getItem('user'));
   contacts: { relationship: Relationship, user: User }[] = [];
+  selectedPage: number = null;
+  room;
 
   ngOnInit() {
+    this.getUserRelationships();
+  }
+
+  onRoomClick(room) {
+    this.selectedPage = 1;
+    this.room = room;
+  }
+
+  getUserRelationships() {
+    this.contacts = [];
     this.contactService.getUserRelationships().subscribe(res => {
       res.relationships.forEach(relationship => {
         const id = JSON.parse(localStorage.getItem('user'))._id === relationship.sender ? relationship.recipient : relationship.sender;
@@ -28,9 +43,17 @@ export class DashboardComponent implements OnInit {
           this.contacts.push({relationship, user: response.user});
         });
       });
-
-      console.log(this.contacts);
     });
+  }
+
+  onDenyFQ(event) {
+
+    this.selectedPage = null;
+    this.getUserRelationships();
+  }
+
+  onFriendRequest(event) {
+    this.getUserRelationships();
   }
 
   logout() {
