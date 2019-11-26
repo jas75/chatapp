@@ -27,4 +27,16 @@ export class WebsocketService {
     return observable;
   }
 
+  onDenyingFriendRequest() {
+    const observable = new Observable<{ user: string, message: string}>(observer => {
+      this.socket.on('deny-friend-request', (data) => {
+        observer.next(data);
+      });
+      return () => {
+        this.socket.disconnect();
+      };
+    });
+    return observable;
+  }
+
 }

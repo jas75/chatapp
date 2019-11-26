@@ -20,17 +20,26 @@ export class DashboardComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private wsService: WebsocketService
-  ) { }
+  ) {
+    this.wsService.onNewFriendRequest().subscribe(res => {
+      if (res[0].recipient === this.currentUser._id) {
+       this.getUserRelationships();
+      }
+    });
+
+    this.wsService.onDenyingFriendRequest().subscribe(res => {
+      if (res[0].sender_id === this.currentUser._id) {
+       this.getUserRelationships();
+      }
+    });
+  }
 
   currentUser: User = JSON.parse(localStorage.getItem('user'));
   contacts: { relationship: Relationship, user: User }[] = [];
   selectedPage: number = null;
-  room;
+  room: { relationship: Relationship, user: User };
 
   ngOnInit() {
-    this.wsService.onNewFriendRequest().subscribe(res => {
-      console.log(res);
-    });
     this.getUserRelationships();
   }
 

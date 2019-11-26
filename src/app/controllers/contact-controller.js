@@ -18,7 +18,12 @@ exports.sendFriendRequest = (req, res) => {
     return res.status(400).json({ status: 'Bad Request', msg: 'You can\'t add yourself' });
   }
 
-  Relationship.find({ sender: req.user._id, recipient: req.body.recipient })
+  // verifier avec $or
+  Relationship.find({ $or: [
+    { sender: req.user._id, recipient: req.body.recipient },
+    { recipient: req.user._id, sender: req.body.recipient }
+  ]})
+  //Relationship.find({ sender: req.user._id, recipient: req.body.recipient })
     .then(relation => {
       if (relation.length > 0) {
         logger.warn('Relation already exists');
@@ -41,7 +46,7 @@ exports.sendFriendRequest = (req, res) => {
       relationship.save()
         .then(friendrequest => {
           logger.info(friendrequest.sender + ' sent a friend request to ' + friendrequest.recipient);
-          req.io.emit('friend-request',['hey its me again']);
+          req.io.emit('friend-request', [{ recipient: req.body.recipient }]);
           return res.status(201).json({ status: 'OK', msg: 'Friend Request sent' });
         })
         .catch(err => {
@@ -55,6 +60,8 @@ exports.sendFriendRequest = (req, res) => {
     });
 };
 
+
+// delete a Relationship
 exports.removeContact = (req, res) => {
   if (!req.user) {
     return res.status(401).json({ msg: 'Forbidden' });
@@ -69,6 +76,7 @@ exports.removeContact = (req, res) => {
   User.findOne({ _id: req.user._id })
   .then(doc => {
     logger.info(`Found ${doc.email}`);
+    // update friends from User model
     doc.friends = doc.friends.filter(el => {
       el._id === req.body.idToDelete;
     });
@@ -90,6 +98,7 @@ exports.removeContact = (req, res) => {
           .then(relation => {
             if (relation.deletedCount > 0) {
               logger.info(`${req.user._id} blocked ${req.params.sender_id}`);
+              req.io.emit('deny-friend-request', [{ sender_id: req.params.sender_id }]);
               return res.status(200).json({ status: "Ok", msg: 'Connection successfullly removed'});
             }
             logger.warn(`${req.user._id} and ${req.params.sender_id} are not friends`);
