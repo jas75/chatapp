@@ -27,6 +27,8 @@ const server = http.createServer(app);
 /*
  * Create Socket Server  
 */
+
+// require object socketApi from my file
 const socketApi = require('../src/helpers/socketApi');
 const io = socketApi.io;
 io.attach(server);

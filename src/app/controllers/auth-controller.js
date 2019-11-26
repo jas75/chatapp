@@ -99,7 +99,7 @@ exports.getUserById = (req, res) => {
       logger.warn('No user found');
       return res.status(204).send();
     }
-    logger.info(`Found user with id ${req.params.id}: ${user}`);
+    logger.info(`Found user with id ${req.params.id}: ${user.username}`);
     return res.status(200).json({ status: 'OK', user: user });
   })
   .catch(err => {

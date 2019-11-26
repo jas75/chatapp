@@ -8,6 +8,8 @@ socketApi.io = io;
 
 io.on('connection', (socket) => {
     console.log('A user connected');
+    
+    socket.emit('friend-request', ['hey']);
 });
 
 // socketApi.sendNotification = function() {

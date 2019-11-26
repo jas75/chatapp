@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -12,6 +13,18 @@ export class WebsocketService {
 
   sendMessage(data) {
     this.socket.emit('message', data);
+  }
+
+  onNewFriendRequest() {
+    const observable = new Observable<{ user: string, message: string}>(observer => {
+      this.socket.on('friend-request', (data) => {
+        observer.next(data);
+      });
+      return () => {
+        this.socket.disconnect();
+      };
+    });
+    return observable;
   }
 
 }

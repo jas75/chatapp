@@ -28,7 +28,9 @@ export class DashboardComponent implements OnInit {
   room;
 
   ngOnInit() {
-    this.wsService.sendMessage('hey');
+    this.wsService.onNewFriendRequest().subscribe(res => {
+      console.log(res);
+    });
     this.getUserRelationships();
   }
 
@@ -50,7 +52,6 @@ export class DashboardComponent implements OnInit {
   }
 
   onDenyFQ(event) {
-
     this.selectedPage = null;
     this.getUserRelationships();
   }

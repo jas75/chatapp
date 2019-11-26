@@ -41,6 +41,7 @@ exports.sendFriendRequest = (req, res) => {
       relationship.save()
         .then(friendrequest => {
           logger.info(friendrequest.sender + ' sent a friend request to ' + friendrequest.recipient);
+          req.io.emit('friend-request',['hey its me again']);
           return res.status(201).json({ status: 'OK', msg: 'Friend Request sent' });
         })
         .catch(err => {

@@ -28,6 +28,13 @@ app.get('/', (req, res) => {
 
 // app.use(express.static(path.join(__dirname, 'src/public')));
 
+const io = require('./src/helpers/socketApi').io;
+
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
+
 const api = require('./src/routes/api.js');
 
 app.use('/api', api);
