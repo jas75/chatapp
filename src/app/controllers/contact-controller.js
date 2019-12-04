@@ -18,7 +18,7 @@ exports.sendFriendRequest = (req, res) => {
     return res.status(400).json({ status: 'Bad Request', msg: 'You can\'t add yourself' });
   }
 
-  // verifier avec $or
+  //verifier avec $or
   Relationship.find({ $or: [
     { sender: req.user._id, recipient: req.body.recipient },
     { recipient: req.user._id, sender: req.body.recipient }
@@ -46,7 +46,7 @@ exports.sendFriendRequest = (req, res) => {
       relationship.save()
         .then(friendrequest => {
           logger.info(friendrequest.sender + ' sent a friend request to ' + friendrequest.recipient);
-          req.io.emit('friend-request', [{ recipient: req.body.recipient }]);
+          req.io.sockets.in(friendrequest.recipient).emit('friend-request');
           return res.status(201).json({ status: 'OK', msg: 'Friend Request sent' });
         })
         .catch(err => {
@@ -58,6 +58,39 @@ exports.sendFriendRequest = (req, res) => {
       logger.log({ 'level':'error', msg: err});
       return res.status(400).json({ status: 'Bad Request', msg: 'Couldn\'t return a relation because of' + err });
     });
+  // Relationship.find({ $or: [
+  //   { sender: req.user._id, recipient: req.body.recipient },
+  //   { recipient: req.user._id, sender: req.body.recipient }
+  // ]})
+  // .then(relation => {
+  //   if (relation.length > 0) {
+  //     logger.warn('Relation already exists');
+  //     return res.status(409).json({ status: 'Conflict', msg: 'Relation already exists' });
+  //   }
+  
+  //   const message = new Message({
+  //     sender: req.user._id,
+  //     content: `Hey, would you like to be my friend ?`,
+  //     dateCreation: Date.now()
+  //   });
+  
+  //   const relationship = new Relationship({
+  //     sender: req.user._id,
+  //     recipient: req.body.recipient,
+  //     areFriends: false ,
+  //     messages: message
+  //   });
+  // }).then(() => {
+  // relationship.save()
+  // .then(friendrequest => {
+  //     logger.info(friendrequest.sender + ' sent a friend request to ' + friendrequest.recipient);
+  //     req.io.emit('friend-request', [{ recipient: req.body.recipient }]);
+  //     return res.status(201).json({ status: 'OK', msg: 'Friend Request sent' });
+  // })
+  // ).catch(err => {
+  //   logger.log({ 'level':'error', msg: err});
+  //   return res.status(400).json({ status: 'Bad Request', msg: 'Couldn\'t return a relation because of' + err });
+  // }});
 };
 
 
@@ -98,7 +131,7 @@ exports.removeContact = (req, res) => {
           .then(relation => {
             if (relation.deletedCount > 0) {
               logger.info(`${req.user._id} blocked ${req.params.sender_id}`);
-              req.io.emit('deny-friend-request', [{ sender_id: req.params.sender_id }]);
+              req.io.sockets.in(req.params.sender_id).emit('deny-friend-request');
               return res.status(200).json({ status: "Ok", msg: 'Connection successfullly removed'});
             }
             logger.warn(`${req.user._id} and ${req.params.sender_id} are not friends`);
@@ -197,6 +230,7 @@ exports.acceptFriend = (req, res) => {
             .then(() => {
               logger.info(`User ${recipient.email} has now ${req.body.sender} in friends array`);
               logger.info(`${sender.email} and ${recipient.email} are now friends`);
+              req.io.in(req.body.sender).emit('accept-friend-request');
               return res.status(201).json({ status: 'Created', msg: `You are now friend with ${sender.email}`});
             })
             .catch(err => {

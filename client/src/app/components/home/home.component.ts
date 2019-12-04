@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.createForms();
-    this.wsService.sendMessage('test');
+    //this.wsService.sendMessage('test');
   }
 
   private createForms() {

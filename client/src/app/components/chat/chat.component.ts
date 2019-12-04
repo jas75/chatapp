@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Relationship } from 'src/app/interfaces/relationship';
+import { Relationship, Room } from 'src/app/interfaces/relationship';
 import { User } from 'src/app/interfaces/identity';
 import { ContactService } from 'src/app/services/contact/contact.service';
+import { WebsocketService } from 'src/app/services/websocket/websocket.service';
 
 @Component({
   selector: 'app-chat',
@@ -10,18 +11,35 @@ import { ContactService } from 'src/app/services/contact/contact.service';
 })
 export class ChatComponent implements OnInit {
 
-  @Input() room: { relationship: Relationship, contact: User };
+  @Input() room: Room;
   @Output() decision: EventEmitter<any> = new EventEmitter();
 
   currentUser: User = JSON.parse(localStorage.getItem('user'));
 
+  isTyping = false;
   isFriendRequest = false;
 
   constructor(
-    private contactService: ContactService
-  ) { }
+    private contactService: ContactService,
+    private wsService: WebsocketService
+  ) {}
 
   ngOnInit() {
+    //console.log(this.room.contact._id);
+    // create a room
+    this.wsService.joinRoom(this.room.relationship._id);
+
+    // When user accept my friend request form is not disabled anymore
+    this.wsService.onAcceptingFriendRequest().subscribe(() => {
+      this.room.relationship.areFriends = true;
+    });
+
+    this.wsService.receivedTyping().subscribe(res => {
+      if (res.user === this.room.contact._id && res.isTyping) {
+        this.isTyping = res.isTyping;
+      }
+    });
+
     this.showFriendRequest();
   }
 
@@ -42,14 +60,16 @@ export class ChatComponent implements OnInit {
     this.contactService.acceptFriendRequest(sender).subscribe(res => {
       this.isFriendRequest = false;
       this.room.relationship.areFriends = true;
-      console.log(res);
     });
   }
 
   denyFriendRequest() {
     this.contactService.denyFriendRequest(this.room.relationship.sender).subscribe(res => {
-      console.log(res);
       this.decision.emit(null);
     });
+  }
+
+  typing() {
+    this.wsService.typing({ room: this.room.relationship._id, user: this.currentUser._id });
   }
 }

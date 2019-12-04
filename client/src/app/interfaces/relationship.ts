@@ -1,3 +1,5 @@
+import { User } from './identity';
+
 export interface Relationship {
     _id: string;
     sender: string;
@@ -16,4 +18,9 @@ export interface Message {
 export interface RelationshipResponse {
     status: string;
     relationships: Relationship[];
+}
+
+export interface Room {
+    relationship: Relationship;
+    contact: User;
 }
