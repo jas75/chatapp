@@ -20,9 +20,9 @@ io.on('connection', (socket) => {
     });
 
     socket.on('typing', (data) => {
-        console.log(data);
+        const isTyping = data.input.length > 0 ? true : false;
         io.in(data.room).emit('typing', { 
-            isTyping: true,
+            isTyping: isTyping,
             user: data.user
         });
     });

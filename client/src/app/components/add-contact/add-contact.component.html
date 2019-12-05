@@ -6,7 +6,7 @@
                 <div class="form-row align-items-center mt-3">
                     <div class="col-auto">
                     <label class="sr-only" for="inlineFormInput">Name</label>
-                    <input (chane)="onInputChange($event)" type="text" formControlName="queryParams" class="form-control mb-2"  placeholder="Email or Username...">
+                    <input (change)="onInputChange($event)" type="text" formControlName="queryParams" class="form-control mb-2"  placeholder="Email or Username...">
                     </div>
                     
                     <div class="col-auto">
@@ -22,7 +22,7 @@
 <div class="container-fluid" style="height: 95vh; overflow-y: scroll;">
 
 
-    <small *ngIf="cards">{{cards.length}} {{cards.length <=1 ? 'result' : 'results'}} for {{searchForm.get('queryParams').value}}</small>
+    <small *ngIf="cards && searchForm.controls.queryParams.value.length >= 3">{{cards.length}} {{cards.length <=1 ? 'result' : 'results'}} for {{searchForm.get('queryParams').value}}</small>
     <div class="row">
       
         <div class="col-sm-4 py-2" *ngFor="let card of cards">

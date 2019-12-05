@@ -3,6 +3,7 @@ import { Relationship, Room } from 'src/app/interfaces/relationship';
 import { User } from 'src/app/interfaces/identity';
 import { ContactService } from 'src/app/services/contact/contact.service';
 import { WebsocketService } from 'src/app/services/websocket/websocket.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-chat',
@@ -19,13 +20,17 @@ export class ChatComponent implements OnInit {
   isTyping = false;
   isFriendRequest = false;
 
+  chatForm: FormGroup;
+
   constructor(
     private contactService: ContactService,
-    private wsService: WebsocketService
+    private wsService: WebsocketService,
+    private formBuilder: FormBuilder
   ) {}
 
   ngOnInit() {
-    //console.log(this.room.contact._id);
+    this.createForm();
+
     // create a room
     this.wsService.joinRoom(this.room.relationship._id);
 
@@ -35,12 +40,16 @@ export class ChatComponent implements OnInit {
     });
 
     this.wsService.receivedTyping().subscribe(res => {
-      if (res.user === this.room.contact._id && res.isTyping) {
-        this.isTyping = res.isTyping;
-      }
+      this.isTyping = res.user === this.room.contact._id && res.isTyping ? true : false;
     });
 
     this.showFriendRequest();
+  }
+
+  private createForm() {
+    this.chatForm = this.formBuilder.group({
+      text: ['', Validators.required ]
+    });
   }
 
   showFriendRequest() {
@@ -69,7 +78,8 @@ export class ChatComponent implements OnInit {
     });
   }
 
-  typing() {
-    this.wsService.typing({ room: this.room.relationship._id, user: this.currentUser._id });
+  typing(event) {
+    console.log(this.chatForm.controls.text.value);
+    this.wsService.typing({ room: this.room.relationship._id, user: this.currentUser._id, input: this.chatForm.controls.text.value });
   }
 }
