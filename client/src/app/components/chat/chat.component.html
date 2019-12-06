@@ -13,7 +13,7 @@
         </div>
         <div class="messages" style="width: 100%; overflow-y: scroll; height: 85vh;">
             <ul>
-                <li [ngClass]="{ 'sent': message.sender == currentUser._id, 'replies': message.sender != currentUser._id}" class="sent" *ngFor="let message of room.relationship.messages">
+                <li [ngClass]="{ 'sent': message.sender == currentUser._id, 'replies': message.sender != currentUser._id}" *ngFor="let message of room.relationship.messages">
                     <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
                     <p>{{ message.content }}</p>
                 </li>

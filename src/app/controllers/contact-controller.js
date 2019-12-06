@@ -5,94 +5,59 @@ const logger = require('./../../../utils/logger');
 
 exports.sendFriendRequest = (req, res) => {
   if (!req.user) {
-    return res.status(401).json({ msg: 'Forbidden' });
+    return res.status(401).json({ status: 'Unauthorized', msg: 'Forbidden' });
   }
 
   if (!req.body.recipient) { 
     logger.warn('Missing payload parameters');
-    return res.status(400).json({ msg: 'Something went wrong' });
+    return res.status(400).json({ status: 'Bad Request', msg: 'Something went wrong'});
   }
 
   if(req.user._id === req.body.recipient) {
     logger.warn('User trying to add himself');
-    return res.status(400).json({ status: 'Bad Request', msg: 'You can\'t add yourself' });
+    return res.status(400).json({ status: 'Bad Request', msg: 'Something went wrong'});
   }
 
-  //verifier avec $or
   Relationship.find({ $or: [
     { sender: req.user._id, recipient: req.body.recipient },
     { recipient: req.user._id, sender: req.body.recipient }
   ]})
-  //Relationship.find({ sender: req.user._id, recipient: req.body.recipient })
-    .then(relation => {
-      if (relation.length > 0) {
-        logger.warn('Relation already exists');
-        return res.status(409).json({ status: 'Conflict', msg: 'Relation already exists' });
-      }
+  .then(relation => {
+        if (relation.length > 0) {
+          logger.warn('Relation already exists');
+          throw {
+            error: new Error(),
+            status: 409,
+            statusmsg: 'Conflict',
+            msg: 'Relation already exists'
+          };
+        }
 
-      const message = new Message({
-        sender: req.user._id,
-        content: `Hey, would you like to be my friend ?`,
-        dateCreation: Date.now()
-      });
-
-      const relationship = new Relationship({
-        sender: req.user._id,
-        recipient: req.body.recipient,
-        areFriends: false ,
-        messages: message
-      });
-
-      relationship.save()
-        .then(friendrequest => {
-          logger.info(friendrequest.sender + ' sent a friend request to ' + friendrequest.recipient);
-          req.io.sockets.in(friendrequest.recipient).emit('friend-request');
-          return res.status(201).json({ status: 'OK', msg: 'Friend Request sent' });
-        })
-        .catch(err => {
-          logger.log({ 'level':'error', msg: err});
-          return res.status(400).json({ status: 'Bad Request', msg: 'Couldn\'t send friend request because of' + err });
+        const message = new Message({
+          sender: req.user._id,
+          content: `Hey, would you like to be my friend ?`,
+          dateCreation: Date.now()
         });
-    })
-    .catch(err => {
-      logger.log({ 'level':'error', msg: err});
-      return res.status(400).json({ status: 'Bad Request', msg: 'Couldn\'t return a relation because of' + err });
-    });
-  // Relationship.find({ $or: [
-  //   { sender: req.user._id, recipient: req.body.recipient },
-  //   { recipient: req.user._id, sender: req.body.recipient }
-  // ]})
-  // .then(relation => {
-  //   if (relation.length > 0) {
-  //     logger.warn('Relation already exists');
-  //     return res.status(409).json({ status: 'Conflict', msg: 'Relation already exists' });
-  //   }
-  
-  //   const message = new Message({
-  //     sender: req.user._id,
-  //     content: `Hey, would you like to be my friend ?`,
-  //     dateCreation: Date.now()
-  //   });
-  
-  //   const relationship = new Relationship({
-  //     sender: req.user._id,
-  //     recipient: req.body.recipient,
-  //     areFriends: false ,
-  //     messages: message
-  //   });
-  // }).then(() => {
-  // relationship.save()
-  // .then(friendrequest => {
-  //     logger.info(friendrequest.sender + ' sent a friend request to ' + friendrequest.recipient);
-  //     req.io.emit('friend-request', [{ recipient: req.body.recipient }]);
-  //     return res.status(201).json({ status: 'OK', msg: 'Friend Request sent' });
-  // })
-  // ).catch(err => {
-  //   logger.log({ 'level':'error', msg: err});
-  //   return res.status(400).json({ status: 'Bad Request', msg: 'Couldn\'t return a relation because of' + err });
-  // }});
-};
 
+        const relationship = new Relationship({
+          sender: req.user._id,
+          recipient: req.body.recipient,
+          areFriends: false,
+          messages: message
+        });
+
+        return relationship.save();
+   })
+   .then(friendrequest => {
+        logger.info(friendrequest.sender + ' sent a friend request to ' + friendrequest.recipient);
+        req.io.sockets.in(friendrequest.recipient).emit('friend-request');
+        return res.status(201).json({ status: 'OK', msg: 'Friend Request sent' });
+   })
+   .catch(err => {
+        logger.error(err.msg);
+        return res.status(err.status).json({ status: err.statusmsg, msg: err.msg });
+   });
+};
 
 // delete a Relationship
 exports.removeContact = (req, res) => {
@@ -106,56 +71,43 @@ exports.removeContact = (req, res) => {
   }
 
   logger.info(`Searching for ${req.user._id}`);
+
   User.findOne({ _id: req.user._id })
+  // Remove the ids on the friends array of User 
   .then(doc => {
     logger.info(`Found ${doc.email}`);
-    // update friends from User model
     doc.friends = doc.friends.filter(el => {
       el._id === req.body.idToDelete;
     });
-    doc.save()
-    .then(() => {
-      logger.info(`Searching for ${req.params.sender_id}`);
-      User.findOne({ _id: req.params.sender_id })
-      .then(doc2 => {
-        logger.info(`Found ${doc2.email}`);
-        doc2.friends = doc2.friends.filter(el => {
-          el._id === req.user._id;
-        });
-        doc2.save()
-        .then(() => {
-          Relationship.deleteOne({ $or: [
-            { sender: req.user._id, recipient: req.params.sender_id },
-            { sender: req.params.sender_id, recipient: req.user._id }
-          ]})
-          .then(relation => {
-            if (relation.deletedCount > 0) {
-              logger.info(`${req.user._id} blocked ${req.params.sender_id}`);
-              req.io.sockets.in(req.params.sender_id).emit('deny-friend-request');
-              return res.status(200).json({ status: "Ok", msg: 'Connection successfullly removed'});
-            }
-            logger.warn(`${req.user._id} and ${req.params.sender_id} are not friends`);
-            return res.status(400).json({ status: 'Bad Request', msg: 'Relationship does not exist'});
-          })
-          .catch(err => {
-            logger.error(err);
-            return res.status(400).json({ status: 'Bad Request', msg: 'Something went wrong'});
-          });
-        })
-        .catch(err => {
-          logger.error(err);
-          return res.status(400).json({ status: 'Bad Request', msg: 'Something went wrong'});
-        });
-      })
-      .catch(err => {
-        logger.error(err);
-        return res.status(400).json({ status: 'Bad Request', msg: 'Something went wrong'});
-      });
-    })
-    .catch(err => {
-      logger.error(err);
-      return res.status(400).json({ status: 'Bad Request', msg: 'Something went wrong'});
+    return doc.save();
+  })
+  .then(() => {
+    logger.info(`Searching for ${req.params.sender_id}`);
+    return User.findOne({ _id: req.params.sender_id });
+  })
+  .then(doc2 => {
+    logger.info(`Found ${doc2.email}`);
+    doc2.friends = doc2.friends.filter(el => {
+      el._id === req.user._id;
     });
+    return doc2.save();
+  })
+  // Then delete the Relationship
+  .then(() => {
+    return Relationship.deleteOne({ $or: [
+      { sender: req.user._id, recipient: req.params.sender_id },
+      { sender: req.params.sender_id, recipient: req.user._id }
+    ]});
+  })
+  .then(relation => {
+    // if deletedCount is > 0 then relationship was deleted
+    if (relation.deletedCount > 0) {
+      logger.info(`${req.user._id} blocked ${req.params.sender_id}`);
+      req.io.sockets.in(req.params.sender_id).emit('deny-friend-request');
+      return res.status(200).json({ status: "Ok", msg: 'Connection successfullly removed'});
+    }
+    logger.warn(`${req.user._id} and ${req.params.sender_id} are not friends`);
+    return res.status(400).json({ status: 'Bad Request', msg: 'Relationship does not exist'});
   })
   .catch(err => {
     logger.error(err);
@@ -202,7 +154,13 @@ exports.acceptFriend = (req, res) => {
     return res.status(400).json({ msg: 'Something went wrong'});
   }
 
-  Relationship.findOne({ sender: req.body.sender, recipient: req.user._id })
+  let sender1;
+  let recipient1;
+
+  Relationship.findOne({ $or: [
+    { sender: req.user._id, recipient: req.body.sender },
+    { sender: req.body.sender, recipient: req.user._id }
+  ]})
   .then(relation => {
     if (!relation) {
       logger.warn(`No Relationship found for ${req.body.sender} and ${req.user._id}`);
@@ -214,55 +172,36 @@ exports.acceptFriend = (req, res) => {
       return res.status(400).json({ status: 'Bad Request', msg: 'You are already friends' });
     }
     relation.areFriends = true;
-    relation.save()
-    .then(response => {
-      logger.info(`Relationship with id ${response._id} has now property areFriends set to true`);
-      User.findOne({ _id: req.body.sender })
-      .then(sender => {
-        sender.friends.push(req.user._id);
-        sender.save()
-        .then(() => {
-          logger.info(`User ${sender.email} has now ${req.user._id} in friends array`);
-          User.findOne({ _id: req.user._id })
-          .then(recipient => {
-            recipient.friends.push(req.body.sender);
-            recipient.save()
-            .then(() => {
-              logger.info(`User ${recipient.email} has now ${req.body.sender} in friends array`);
-              logger.info(`${sender.email} and ${recipient.email} are now friends`);
-              req.io.in(req.body.sender).emit('accept-friend-request');
-              return res.status(201).json({ status: 'Created', msg: `You are now friend with ${sender.email}`});
-            })
-            .catch(err => {
-              logger.error(err);
-              return res.status(400).json({ status: 'Bad Request', msg: 'Something went wrong' });
-            });
-          })
-          .catch(err => {
-            logger.error(err);
-            return res.status(400).json({ status: 'Bad Request', msg: 'Something went wrong' });
-          });
-        })
-        .catch(err => {
-          logger.error(err);
-          return res.status(400).json({ status: 'Bad Request', msg: 'Something went wrong' });
-        });
-      })
-      .catch(err => {
-        logger.error(err);
-        return res.status(400).json({ status: 'Bad Request', msg: 'Something went wrong' });
-      });
-    })
-    .catch(err => {
-      logger.error(err);
-      return res.status(400).json({ status: 'Bad Request', msg: 'Something went wrong' });
-    });
+    return relation.save();
+  })
+  .then(response => {
+    logger.info(`Relationship with id ${response._id} has now property areFriends set to true`);
+    return User.findOne({ _id: req.body.sender });
+  })
+  .then(sender => {
+    sender1 = sender;
+    sender.friends.push(req.user._id);
+    return sender.save();
+  })
+  .then(() => {
+    logger.info(`User ${sender1.email} has now ${req.user._id} in friends array`);
+    return User.findOne({ _id: req.user._id });
+  })
+  .then(recipient => {
+    recipient1 = recipient;
+    recipient.friends.push(req.body.sender);
+    return recipient.save();
+  })
+  .then(() =>{
+    logger.info(`User ${recipient1.email} has now ${req.body.sender} in friends array`);
+    logger.info(`${sender1.email} and ${recipient1.email} are now friends`);
+    req.io.in(req.body.sender).emit('accept-friend-request');
+    return res.status(201).json({ status: 'Created', msg: `You are now friend with ${sender1.email}`});
   })
   .catch(err => {
     logger.error(err);
     return res.status(400).json({ status: 'Bad Request', msg: 'Something went wrong' });
   });
-
 };
 
 // get one relationship matching with two user ids
