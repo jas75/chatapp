@@ -15,14 +15,6 @@
                             <li id="status-offline"><span class="status-circle"></span> <p>Offline</p></li>
                         </ul>
                     </div>
-                    <div id="expanded">
-                        <label for="twitter"><i class="fa fa-facebook fa-fw" aria-hidden="true"></i></label>
-                        <input name="twitter" type="text" value="mikeross" />
-                        <label for="twitter"><i class="fa fa-twitter fa-fw" aria-hidden="true"></i></label>
-                        <input name="twitter" type="text" value="ross81" />
-                        <label for="twitter"><i class="fa fa-instagram fa-fw" aria-hidden="true"></i></label>
-                        <input name="twitter" type="text" value="mike.ross" />
-                    </div>
                 </div>
             </div>
 
@@ -38,7 +30,10 @@
             <div id="contacts">
                 <ul style="padding-left: 0;">
 
-                    <li class="contact active" (click)="selectedPage = null; onRoomClick(contact);" *ngFor="let contact of contacts">
+                    <li *ngFor="let contact of contacts" class="contact" [ngClass]="{
+                        'active': 
+                        room && contact.contact._id === room.contact._id && selectedPage === 1
+                    }" (click)="onRoomClick(contact);">
                         <div class="wrap">
                             <span class="contact-status online"></span>
                             <img src="http://emilcarlsson.se/assets/louislitt.png" alt="" />
