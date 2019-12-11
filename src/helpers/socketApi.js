@@ -1,6 +1,3 @@
-// var socket_io = require('socket.io');
-// var io = socket_io();
-
 const io = require('socket.io')();
 const socketApi = {};
 

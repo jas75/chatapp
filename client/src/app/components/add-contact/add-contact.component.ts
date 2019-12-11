@@ -39,15 +39,19 @@ export class AddContactComponent implements OnInit {
   }
 
   onInputSearchChange(): void {
+    // when user input
     this.searchForm.valueChanges.subscribe(value => {
       if (this.searchForm.valid) {
+        // get user suggestion from input
         this.userService.getUsersSuggestions(value.queryParams).subscribe(usersugg => {
+          // display nothing
           if (usersugg === null) {
             this.cards = [];
           } else {
             this.cards = [];
             usersugg.users.forEach(user => {
               this.contactService.getUserRelationshipById(user._id).subscribe(relation => {
+                // tslint:disable-next-line: no-shadowed-variable
                 let value: boolean;
                 relation ? value = true : value = false;
                 this.cards.push({ user, relation: value});
@@ -69,9 +73,8 @@ export class AddContactComponent implements OnInit {
     this.contactService.sendFriendRequestTo(recipient).subscribe(res => {
       if (res.status === 'OK') {
 
-        //Sent to parent coomponent to reload Relationships
+        // Sent to parent coomponent to reload Relationships
         this.fqSent.emit(null);
-        
         // disable ADD FRIEND button
         this.cards = this.cards.map(el => {
           if (el.user._id === id) {

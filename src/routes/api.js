@@ -28,13 +28,14 @@ router.get('/user/:id', authController.getUserById);
 // @access  Public
 router.post('/user', authController.registerUser);
 
+
+// TODO test
 // @route   DELETE /api/user
-// @des     Delete a user
+// @des     Delete current user 
 // @access  Auth
 router.delete('/user', passport.authenticate('jwt', { session: false }), authController.deleteUser);
 
-
-// @route   GET /api/user/suggestions/:email
+// @route   GET /api//suggestions/:email
 // @des     Returns an array of one or several users suggestions
 // @access  Auth
 router.get('/user/suggestions/:email', passport.authenticate('jwt', { session: false }), contactController.getOneOrManyUsers);

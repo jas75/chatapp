@@ -47,6 +47,7 @@ export class ContactService {
     }));
   }
 
+  // get all user relationships including friend request to list in dashboard
   getUserRelationships(): Observable<RelationshipResponse> {
     return this.http.get<RelationshipResponse>(this.url + '/api/contact', this.createHttpHeaders()).pipe(tap(res => {
       return res;
@@ -56,6 +57,7 @@ export class ContactService {
     }));
   }
 
+  // accept a friend request
   acceptFriendRequest(sender: any) {
     return this.http.post(this.url + '/api/friend-request/confirm', sender, this.createHttpHeaders()).pipe(tap(res => {
       return res;
@@ -65,6 +67,8 @@ export class ContactService {
     }));
   }
 
+
+  // deny a friend request
   denyFriendRequest(senderid: string) {
     return this.http.delete(this.url + '/api/friend-request/deny/' + senderid, this.createHttpHeaders()).pipe(tap(res => {
       return res;

@@ -229,6 +229,7 @@ exports.getRelationshipByIds = (req, res) => {
   });
 };
 
+// TODO test
 // get all relationships whether he is the sender or recipient
 exports.getUserRelationShips = (req, res) => {
   Relationship.find({ $or: [
