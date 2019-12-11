@@ -39,11 +39,30 @@ export class ChatComponent implements OnInit {
       this.room.relationship.areFriends = true;
     });
 
+    this.onChanges()
+    ;
     this.wsService.receivedTyping().subscribe(res => {
       this.isTyping = res.user === this.room.contact._id && res.isTyping ? true : false;
     });
 
+    this.wsService.onMessage().subscribe(res => {
+      const message = {
+        _id: 'gbhn',
+        sender: res.sender_id,
+        content: res.content,
+        dateCreation: new Date()
+      };
+
+      this.room.relationship.messages.push(message);
+    });
+
     this.showFriendRequest();
+  }
+
+  onChanges() {
+    this.chatForm.valueChanges.subscribe(value => {
+      this.wsService.typing({ room: this.room.relationship._id, user: this.currentUser._id, input: value.text });
+    });
   }
 
   private createForm() {
@@ -78,8 +97,15 @@ export class ChatComponent implements OnInit {
     });
   }
 
-  typing(event) {
-    console.log(this.chatForm.controls.text.value);
-    this.wsService.typing({ room: this.room.relationship._id, user: this.currentUser._id, input: this.chatForm.controls.text.value });
+  onSubmit() {
+    if (this.chatForm.valid) {
+      const newMessage = {
+        room_id: this.room.relationship._id,
+        sender_id: this.currentUser._id,
+        content: this.chatForm.controls.text.value
+      };
+      this.chatForm.reset();
+      this.wsService.sendMessage(newMessage);
+    }
   }
 }

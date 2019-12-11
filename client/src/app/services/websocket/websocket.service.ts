@@ -71,4 +71,20 @@ export class WebsocketService {
     return observable;
   }
 
+  sendMessage(data) {
+    this.socket.emit('message', data);
+  }
+
+  onMessage(): Observable<any> {
+    const observable = new Observable<any>(observer => {
+      this.socket.on('message', (data) => {
+        observer.next(data);
+      });
+      return () => {
+        this.socket.disconnect();
+      };
+    });
+    return observable;
+  }
+
 }

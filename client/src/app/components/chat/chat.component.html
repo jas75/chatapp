@@ -34,14 +34,14 @@
                 </li>
             </ul>
         </div>
-        <form [formGroup]="chatForm" (ngSubmit)="sendText()" class="message-input">
+        <form [formGroup]="chatForm" (ngSubmit)="onSubmit()" class="message-input">
             <div class="wrap" style="display:  flex;">
             <input *ngIf="!room.relationship.areFriends" [disabled]="true" type="text" placeholder="Forbidden" />
-            <input *ngIf="room.relationship.areFriends" (keydown)="typing($event)" type="text" placeholder="Write your message..." formControlName="text" />
+            <input *ngIf="room.relationship.areFriends" type="text" placeholder="Write your message..." formControlName="text" />
             <button [disabled]="!room.relationship.areFriends" class="attachment">
                 <i class="fa fa-paperclip" aria-hidden="true"></i>
             </button>
-            <button [disabled]="!room.relationship.areFriends" class=""><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+            <button [disabled]="!room.relationship.areFriends && !chatForm.valid" class=""><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
             </div>
         </form>
     </div>
