@@ -6,9 +6,10 @@
   "scripts": {
     "client-install": "cd client && npm install",
     "back": "nodemon ./bin/www.js",
-    "client": "cd client && npm start",
+    "client": "cd ../client && npm start",
     "dev": "concurrently \"npm run back\" \"npm run client\"",
-    "test": "mocha ./tests"
+    "test": "mocha ./tests",
+    "docker": "node ./bin/www.js"
   },
   "repository": {
     "type": "git",

@@ -38,6 +38,8 @@ export class AddContactComponent implements OnInit {
     });
   }
 
+
+  // TODO test
   onInputSearchChange(): void {
     // when user input
     this.searchForm.valueChanges.subscribe(value => {
