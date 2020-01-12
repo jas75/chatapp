@@ -41,7 +41,10 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-console.log('There will be dragons at:' + port);
+const test = require('./../src/config/config');
+
+
+
 /**
  * Normalize a port into a number, string, or false.
  */
@@ -97,6 +100,7 @@ function onError (error) {
  */
 
 function onListening () {
+  console.log('There will be dragons at:' + port);
   const addr = server.address();
   const bind = typeof addr === 'string'
     ? 'pipe ' + addr

@@ -49,7 +49,12 @@ app.use('/api', api);
 
 // var mongoUri = 'mongodb://' + config.dbUser + ':' + config.dbPass + '@ds341247.mlab.com:41247/chatappjas'
 
-mongoose.connect(config.dbHost + config.dbName, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
+// mongoose.connect(config.dbHost + config.dbName, { useNewUrlParser: true, useCreateIndex: true });
+// mongoose.connect('mongodb://mongo/' + config.dbName, { useNewUrlParser: true, useCreateIndex: true });
+
+
+let mongoUri = 'mongodb://' + config.dbUser + ':' + config.dbPass + '@' + config.dbHost + '/' + config.dbName;
+mongoose.connect(mongoUri, { useNewUrlParser: true, useCreateIndex: true,  useUnifiedTopology: true });
 
 const connection = mongoose.connection;
 
@@ -58,9 +63,8 @@ connection.once('open', () => {
 });
 
 connection.on('error', (err) => {
-  console.log('MongoDb connection error. Please make sure MongoDB is running.' + err);
+  console.log('MongoDb connection error. Please make sure MongoDB is running. ' + err);
   process.exit();
 });
-//console.log(app);
 
 module.exports = app;
