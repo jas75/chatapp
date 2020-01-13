@@ -15,6 +15,8 @@ import { AddContactComponent } from './components/add-contact/add-contact.compon
 import { SettingsComponent } from './components/settings/settings.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { NewsComponent } from './components/news/news.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { NewsComponent } from './components/news/news.component';
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

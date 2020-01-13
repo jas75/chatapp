@@ -68,11 +68,18 @@ export class AddContactComponent implements OnInit {
         // Sent to parent coomponent to reload Relationships
         this.fqSent.emit(null);
         // disable ADD FRIEND button
-        this.cards = this.cards.map(el => {
-          if (el.user._id === id) {
-            el.relation = true;
+        // this.cards = this.cards.map(el => {
+        //   if (el.user._id === id) {
+        //     el.relation = true;
+        //   }
+        //   return el;
+        // });
+
+        this.cards = this.cards.map(user => {
+          if (user._id === id) {
+            user.relationshipExists = true;
           }
-          return el;
+          return user;
         });
       }
     });
