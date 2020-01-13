@@ -31,7 +31,7 @@
                 <div class="card-body">
                     <h3 class="card-title">{{card.username}}</h3>
                     <p class="card-text"><small>{{card.email}}</small></p>
-                    <button [disabled]="card.relationshipExists" class="btn btn-outline-primary" (click)="sendFriendRequest(card.user._id)">ADD FRIEND</button>
+                    <button [disabled]="card.relationshipExists" class="btn btn-outline-primary" (click)="sendFriendRequest(card._id)">ADD FRIEND</button>
                 </div>
             </div>
         </div>
