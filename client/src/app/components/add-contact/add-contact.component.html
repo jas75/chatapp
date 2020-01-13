@@ -29,9 +29,9 @@
             <div class="card h-100">
                 <img src="http://emilcarlsson.se/assets/donnapaulsen.png" alt="" class="card-img-top">
                 <div class="card-body">
-                    <h3 class="card-title">{{card.user.username}}</h3>
-                    <p class="card-text"><small>{{card.user.email}}</small></p>
-                    <button [disabled]="card.relation" class="btn btn-outline-primary" (click)="sendFriendRequest(card.user._id)">ADD FRIEND</button>
+                    <h3 class="card-title">{{card.username}}</h3>
+                    <p class="card-text"><small>{{card.email}}</small></p>
+                    <button [disabled]="card.relationshipExists" class="btn btn-outline-primary" (click)="sendFriendRequest(card.user._id)">ADD FRIEND</button>
                 </div>
             </div>
         </div>

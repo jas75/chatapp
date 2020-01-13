@@ -16,7 +16,7 @@ export class AddContactComponent implements OnInit {
 
   searchForm: FormGroup;
 
-  cards: Array<{ user: User, relation: boolean }> = [];
+  cards: User[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,29 +42,19 @@ export class AddContactComponent implements OnInit {
   // TODO test
   onInputSearchChange(): void {
     // when user input
-    this.searchForm.valueChanges.subscribe(value => {
-      if (this.searchForm.valid) {
-        // get user suggestion from input
-        this.userService.getUsersSuggestions(value.queryParams).subscribe(usersugg => {
-          // display nothing
-          if (usersugg === null) {
-            this.cards = [];
-          } else {
-            this.cards = [];
-            usersugg.users.forEach(user => {
-              this.contactService.getUserRelationshipById(user._id).subscribe(relation => {
-                // tslint:disable-next-line: no-shadowed-variable
-                let value: boolean;
-                relation ? value = true : value = false;
-                this.cards.push({ user, relation: value});
-              });
-            });
-          }
-        });
-      } else {
-        this.cards = [];
-      }
-    });
+      this.cards = [];
+      this.searchForm.valueChanges.subscribe(value => {
+        // if input has at least 3 characters
+        if (this.searchForm.valid) {
+          // get user suggestion from input
+
+          this.userService.getUsersSuggestions(value.queryParams).subscribe(res => {
+            this.cards = res.users;
+          });
+        } else {
+          this.cards = [];
+        }
+      });
   }
 
   sendFriendRequest(id): void {

@@ -3,6 +3,8 @@ export interface User {
     email: string;
     username: string;
     password: string;
+    friends?: string[];
+    relationshipExists?: boolean;
 }
 export interface Identity {
     token: string;

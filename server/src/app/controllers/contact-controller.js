@@ -136,10 +136,29 @@ exports.getOneOrManyUsers = (req, res) => {
       logger.info('Didn\'t find any user for these refs');
       return res.status(204).send();
     }
-    logger.info(`${users.length} user matching`);
+    
+    // check if users are friend with current user
+    let usersMap = users.map(user => {
+      return Relationship.findOne({ $or: [
+        { sender: req.user._id, recipient: user._id },
+        { sender: user._id, recipient: req.user._id }
+      ]})
+      .lean()
+      .then(relationship => {
+        let relationshipExists;
+        relationship ? relationshipExists = true : relationshipExists = false;
+        let jsonUser = user.toJSON();
+        jsonUser.relationshipExists = relationshipExists;
+        return jsonUser;
+      });
+    });
 
-    logger.info(`${users.length} user matching`);
-    return res.status(200).json({ status: 'OK', users: users });
+    Promise.all(usersMap)
+    .then(results => {
+      console.log(results);
+      logger.info(`${users.length} user matching`);
+      return res.status(200).json({ status: 'OK', users: results });
+    });
   })
   .catch(err => {
     logger.error(err);
