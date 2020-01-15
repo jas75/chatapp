@@ -18,7 +18,7 @@ export class ChatComponent implements OnChanges {
   currentUser: User = JSON.parse(localStorage.getItem('user'));
 
   isTyping = false;
-  isFriendRequest = false;
+  isFriendRequest: boolean;
 
   chatForm: FormGroup;
 
@@ -29,6 +29,8 @@ export class ChatComponent implements OnChanges {
   ) {}
 
   ngOnChanges() {
+    this.isFriendRequest = false;
+    this.showFriendRequest();
     this.createForm();
 
     // create a room
@@ -55,8 +57,6 @@ export class ChatComponent implements OnChanges {
 
       this.room.relationship.messages.push(message);
     });
-
-    this.showFriendRequest();
   }
 
   onChanges() {
@@ -76,6 +76,7 @@ export class ChatComponent implements OnChanges {
         this.room.relationship.areFriends === false &&
         this.room.relationship.messages.length === 1
       ) {
+        console.log("cete personne me demande en ami")
         this.isFriendRequest = true;
       }
   }
