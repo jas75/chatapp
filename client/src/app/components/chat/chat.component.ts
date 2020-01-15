@@ -76,7 +76,6 @@ export class ChatComponent implements OnChanges {
         this.room.relationship.areFriends === false &&
         this.room.relationship.messages.length === 1
       ) {
-        console.log("cete personne me demande en ami")
         this.isFriendRequest = true;
       }
   }
