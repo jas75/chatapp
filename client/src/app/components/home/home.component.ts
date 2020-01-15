@@ -26,14 +26,12 @@ export class HomeComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private wsService: WebsocketService
   ) {
 
    }
 
   ngOnInit() {
     this.createForms();
-    //this.wsService.sendMessage('test');
   }
 
   private createForms() {

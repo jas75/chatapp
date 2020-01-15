@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { Relationship, Room } from 'src/app/interfaces/relationship';
 import { User } from 'src/app/interfaces/identity';
 import { ContactService } from 'src/app/services/contact/contact.service';
@@ -10,7 +10,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css', './../dashboard/dashboard.component.css']
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnChanges {
 
   @Input() room: Room;
   @Output() decision: EventEmitter<any> = new EventEmitter();
@@ -28,7 +28,7 @@ export class ChatComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {}
 
-  ngOnInit() {
+  ngOnChanges() {
     this.createForm();
 
     // create a room

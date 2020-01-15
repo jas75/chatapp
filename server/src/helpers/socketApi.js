@@ -7,7 +7,7 @@ const logger = require('./../../utils/logger');
 socketApi.io = io;
 
 io.on('connection', (socket) => {
-    console.log('A user connected');
+    logger.info(`New socket connection: ${socket.id}`);
 
     // create socket with current user in order to send him realltime notifications
     socket.on('userid', (userid) => {

@@ -44,6 +44,7 @@ export class DashboardComponent implements OnInit {
 
   onRoomClick(room) {
     this.selectedPage = 1;
+    console.log(room);
     this.room = room;
   }
 
