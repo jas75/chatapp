@@ -10,15 +10,28 @@ import { environment } from 'src/environments/environment';
 })
 export class WebsocketService {
 
-  private socket = io(environment.url);
+  private socket: any = io(environment.url, {
+    forceNew: true
+  });
   constructor() { }
+
+  public initSocket() {
+    this.socket = io(environment.url);
+  }
 
   join(userid) {
     this.socket.emit('userid', userid);
   }
 
   joinRoom(roomid) {
-    this.socket.emit('roomid', roomid);
+  //     tu dois englober par 
+  // if(undefined === this.socket._callbacks['$' + 'deny-friend-request']) {}
+    console.log(this.socket);
+    this.socket.emit('join-room', roomid);
+  }
+
+  leaveRoom() {
+    this.socket.emit('leave-room');
   }
 
   onNewFriendRequest(): Observable<any> {
@@ -47,9 +60,11 @@ export class WebsocketService {
 
   onAcceptingFriendRequest(): Observable<{ user: string, message: string}> {
     const observable = new Observable<any>(observer => {
-      this.socket.on('accept-friend-request', (data) => {
-        observer.next(data);
-      });
+      if (undefined === this.socket._callbacks['$' + 'accept-friend-request']) {
+        this.socket.on('accept-friend-request', (data) => {
+          observer.next(data);
+        });
+      }
       return () => {
         this.socket.disconnect();
       };
@@ -63,9 +78,11 @@ export class WebsocketService {
 
   receivedTyping(): Observable<any> {
     const observable = new Observable<any>(observer => {
-      this.socket.on('typing', (data) => {
-        observer.next(data);
-      });
+      if (undefined === this.socket._callbacks['$' + 'typing']) {
+        this.socket.on('typing', (data) => {
+          observer.next(data);
+        });
+      }
       return () => {
         this.socket.disconnect();
       };
@@ -79,9 +96,11 @@ export class WebsocketService {
 
   onMessage(): Observable<any> {
     const observable = new Observable<any>(observer => {
-      this.socket.on('message', (data) => {
-        observer.next(data);
-      });
+      if (undefined === this.socket._callbacks['$' + 'message']) {
+        this.socket.on('message', (data) => {
+            observer.next(data);
+        });
+      }
       return () => {
         this.socket.disconnect();
       };

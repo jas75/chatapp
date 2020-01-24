@@ -9,7 +9,7 @@
         "request": "launch",
         "name": "nodemon",
         "runtimeExecutable": "nodemon",
-        "program": "${workspaceFolder}/bin/www.js",
+        "program": "${workspaceFolder}/server/bin/www.js",
         "restart": true,
         "console": "integratedTerminal",
         "internalConsoleOptions": "neverOpen"
@@ -18,7 +18,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}/bin/www.js",
+            "program": "${workspaceFolder}/server/bin/www.js",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ]

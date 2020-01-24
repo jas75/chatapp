@@ -6,35 +6,46 @@ const logger = require('./../../utils/logger');
 
 socketApi.io = io;
 
-io.on('connection', (socket) => {
+socketApi.io.on('connection', (socket) => {
     logger.info(`New socket connection: ${socket.id}`);
 
-    // create socket with current user in order to send him realltime notifications
+    // create socket  with current user in order to send him realltime notifications
     socket.on('userid', (userid) => {
         logger.info(`Socket connected with user ${userid}`);
         socket.join(userid);
+        //socket.userid = userid;
     });
 
     // create a room 
-    socket.on('roomid', (roomid) => {
-        logger.info(`Socket connected with room ${roomid}`);
-        socket.join(roomid);
-    });
-
-    socket.on('typing', (data) => {
-        logger.info(`Socket detected typing from ${data.user}`);
-        const isTyping = data.input && data.input.length > 0 ? true : false;
-        logger.info(`Socket emit in room ${data.room} that user is typing`);
-        io.in(data.room).emit('typing', { 
-            isTyping: isTyping,
-            user: data.user
+    socket.on('join-room', (roomid) => {     
+        if (socket.room) {
+            // console.log("before leaving: Is client still in "+ socket.room + " (should be true)")
+            // console.log(io.sockets.adapter.sids[socket.id][socket.room]);
+            socket.leave(socket.room, (err) => {
+                if (err) {
+                    logger.error(err);
+                } else { 
+                    logger.info(`Socket left room ${socket.room}`);
+                }
+            });
+        } 
+        // console.log("Before joining: is client in room " + roomid + " (should be undefined)");
+        // console.log(io.sockets.adapter.sids[socket.id][roomid]);
+        socket.join(roomid, (err) => {
+            if (err) {
+                logger.error(err);
+            } else {
+                logger.info(`Socket joined room ${roomid}`);
+                socket.room = roomid;
+            }
         });
+
     });
 
     socket.on('message', (data) => {
-
         Relationship.findById(data.room_id)
         .then(relationship => {
+            logger.info(`Saving message "${data.content}" in DB`);
             const message = new Message({
                 sender: data.sender_id,
                 content: data.content
@@ -43,13 +54,24 @@ io.on('connection', (socket) => {
             return relationship.save();
         })
         .then(() => {
-            console.log('il passe la');
-            io.in(data.room_id).emit('message', {
+            logger.info(`${data.sender_id} sent socket message in room: ${data.room_id}`);
+            console.log("ET LA IL EMITE LE MESSAGE")
+            io.sockets.in(data.room_id).emit('message', {
+                debug: socket.nsp.name,
                 sender_id: data.sender_id,
                 content: data.content
             });
         })
-        .catch(err => logger.err(err));
+        .catch(err => logger.error(err));
+    });
+
+    socket.on('typing', (data) => {
+        const isTyping = data.input && data.input.length > 0 ? true : false;
+        //logger.info(`User ${data.user} is typing in room: ${data.room}`);
+        io.in(data.room).emit('typing', { 
+            isTyping: isTyping,
+            user: data.user
+        });
     });
 });
 

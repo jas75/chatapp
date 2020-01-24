@@ -20,31 +20,28 @@ export class DashboardComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private wsService: WebsocketService
-  ) {
-    // create a connection between currentUser and server
-    this.wsService.join(this.currentUser._id);
-
-    this.wsService.onNewFriendRequest().subscribe(() => {
-      this.getUserRelationships();
-    });
-
-    this.wsService.onDenyingFriendRequest().subscribe(() => {
-       this.getUserRelationships();
-    });
-  }
+  ) { }
 
   currentUser: User = JSON.parse(localStorage.getItem('user'));
   contacts: Room[] = [];
   selectedPage: number = null;
   room: Room;
+  currentRoom: string;
 
   ngOnInit() {
+    // create a connection between currentUser and server
+    this.wsService.join(this.currentUser._id);
+    this.wsService.onNewFriendRequest().subscribe(() => {
+      this.getUserRelationships();
+    });
+    this.wsService.onDenyingFriendRequest().subscribe(() => {
+       this.getUserRelationships();
+    });
     this.getUserRelationships();
   }
 
   onRoomClick(room) {
     this.selectedPage = 1;
-    console.log(room);
     this.room = room;
   }
 

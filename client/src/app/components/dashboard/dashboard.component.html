@@ -54,7 +54,7 @@
         <div class="content">
             <app-add-contact (fqSent)="onFriendRequest($event)" *ngIf="selectedPage === 2"></app-add-contact>
             <app-settings *ngIf="selectedPage === 3"></app-settings>
-            <app-chat (decision)="onDenyFQ($event)" [room]="room" *ngIf="selectedPage === 1"></app-chat>
+            <app-chat (decision)="onDenyFQ($event)" (lastRoom)="test($event)" [room]="room" *ngIf="selectedPage === 1"></app-chat>
             <app-news *ngIf="!selectedPage"></app-news>
         </div>
     </div>

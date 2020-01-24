@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, OnDestroy } from '@angular/core';
 import { Relationship, Room } from 'src/app/interfaces/relationship';
 import { User } from 'src/app/interfaces/identity';
 import { ContactService } from 'src/app/services/contact/contact.service';
@@ -16,10 +16,8 @@ export class ChatComponent implements OnChanges {
   @Output() decision: EventEmitter<any> = new EventEmitter();
 
   currentUser: User = JSON.parse(localStorage.getItem('user'));
-
   isTyping = false;
   isFriendRequest: boolean;
-
   chatForm: FormGroup;
 
   constructor(
@@ -29,27 +27,36 @@ export class ChatComponent implements OnChanges {
   ) {}
 
   ngOnChanges() {
+    this.createForm();
+    this.initIoConnection();
+    console.log(`Room ${this.room.relationship._id}`);
     this.isFriendRequest = false;
     this.showFriendRequest();
-    this.createForm();
+  }
 
-    // create a room
+  // SOCKET.IO
+
+  private initIoConnection() {
     this.wsService.joinRoom(this.room.relationship._id);
+    this.onMessage();
+    this.onAcceptFriendRequest();
+    this.onTyping();
+    this.onReceivedTyping();
 
+  }
+
+  onAcceptFriendRequest() {
     // When user accept my friend request form is not disabled anymore
     this.wsService.onAcceptingFriendRequest().subscribe(() => {
       this.room.relationship.areFriends = true;
     });
+  }
 
-    this.onChanges()
-    ;
-    this.wsService.receivedTyping().subscribe(res => {
-      this.isTyping = res.user === this.room.contact._id && res.isTyping ? true : false;
-    });
-
+  onMessage() {
     this.wsService.onMessage().subscribe(res => {
+
       const message = {
-        _id: 'gbhn',
+        _id: '',
         sender: res.sender_id,
         content: res.content,
         dateCreation: new Date()
@@ -59,9 +66,16 @@ export class ChatComponent implements OnChanges {
     });
   }
 
-  onChanges() {
+  // When user is typing send socket to other user
+  onTyping() {
     this.chatForm.valueChanges.subscribe(value => {
       this.wsService.typing({ room: this.room.relationship._id, user: this.currentUser._id, input: value.text });
+    });
+  }
+
+  onReceivedTyping() {
+    this.wsService.receivedTyping().subscribe(res => {
+      this.isTyping = res.user === this.room.contact._id && res.isTyping ? true : false;
     });
   }
 
@@ -104,8 +118,10 @@ export class ChatComponent implements OnChanges {
         sender_id: this.currentUser._id,
         content: this.chatForm.controls.text.value
       };
-      this.chatForm.reset();
+
       this.wsService.sendMessage(newMessage);
+      this.chatForm.reset();
     }
   }
+
 }

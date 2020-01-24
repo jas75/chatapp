@@ -21,6 +21,7 @@
     "@angular/pwa": "0.803.22",
     "@angular/router": "~8.0.0",
     "@angular/service-worker": "~8.0.0",
+    "@types/socket.io-client": "1.4.32",
     "bootstrap": "^4.3.1",
     "jquery": "^3.4.1",
     "ngx-spinner": "8.0.3",
