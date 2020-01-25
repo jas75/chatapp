@@ -75,15 +75,12 @@ export class WebsocketService {
 
   receivedTyping(): Observable<any> {
     const observable = new Observable<any>(observer => {
-      //if (undefined === this.socket._callbacks['$' + 'typing']) {
+      // if (undefined === this.socket._callbacks['$' + 'typing']) {
         this.socket.on('typing', (data) => {
-          console.log('data');
-          console.log(data);
-          console.log(this.socket);
           observer.next(data);
         });
-      //}
-      return () => {
+      // }
+        return () => {
         this.socket.disconnect();
       };
     });
