@@ -55,7 +55,6 @@ socketApi.io.on('connection', (socket) => {
         })
         .then(() => {
             logger.info(`${data.sender_id} sent socket message in room: ${data.room_id}`);
-            console.log("ET LA IL EMITE LE MESSAGE")
             io.sockets.in(data.room_id).emit('message', {
                 debug: socket.nsp.name,
                 sender_id: data.sender_id,
@@ -67,7 +66,7 @@ socketApi.io.on('connection', (socket) => {
 
     socket.on('typing', (data) => {
         const isTyping = data.input && data.input.length > 0 ? true : false;
-        //logger.info(`User ${data.user} is typing in room: ${data.room}`);
+        logger.info(`User ${data.user} is typing in room: ${data.room}`);
         io.in(data.room).emit('typing', { 
             isTyping: isTyping,
             user: data.user

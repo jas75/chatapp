@@ -31,6 +31,7 @@ export class ChatComponent implements OnChanges {
     this.initIoConnection();
     console.log(`Room ${this.room.relationship._id}`);
     this.isFriendRequest = false;
+    this.isTyping = false;
     this.showFriendRequest();
   }
 

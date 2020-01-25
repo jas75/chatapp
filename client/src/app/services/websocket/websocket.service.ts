@@ -24,9 +24,6 @@ export class WebsocketService {
   }
 
   joinRoom(roomid) {
-  //     tu dois englober par 
-  // if(undefined === this.socket._callbacks['$' + 'deny-friend-request']) {}
-    console.log(this.socket);
     this.socket.emit('join-room', roomid);
   }
 
@@ -78,11 +75,14 @@ export class WebsocketService {
 
   receivedTyping(): Observable<any> {
     const observable = new Observable<any>(observer => {
-      if (undefined === this.socket._callbacks['$' + 'typing']) {
+      //if (undefined === this.socket._callbacks['$' + 'typing']) {
         this.socket.on('typing', (data) => {
+          console.log('data');
+          console.log(data);
+          console.log(this.socket);
           observer.next(data);
         });
-      }
+      //}
       return () => {
         this.socket.disconnect();
       };
