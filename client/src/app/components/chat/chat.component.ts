@@ -43,7 +43,6 @@ export class ChatComponent implements OnChanges {
     this.onAcceptFriendRequest();
     this.onTyping();
     this.onReceivedTyping();
-
   }
 
   onAcceptFriendRequest() {
