@@ -39,7 +39,7 @@
                             <img src="http://emilcarlsson.se/assets/louislitt.png" alt="" />
                             <div class="meta">
                                 <p class="name">{{ contact.contact.username }}</p>
-                                <p class="preview">{{ contact.relationship.messages[0].content }}</p>
+                                <p class="preview">{{ contact.relationship.messages.slice(-1)[0].content }}</p>
                             </div>
                         </div>
                     </li>
