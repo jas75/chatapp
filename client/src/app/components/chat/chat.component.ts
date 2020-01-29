@@ -123,7 +123,8 @@ export class ChatComponent implements OnChanges, AfterViewInit {
         room_id: this.room.relationship._id,
         sender_id: this.currentUser._id,
         recipient_id: this.room.contact._id,
-        content: this.chatForm.controls.text.value
+        content: this.chatForm.controls.text.value,
+        dateCreation: Date.now()
       };
 
       this.wsService.sendMessage(newMessage);

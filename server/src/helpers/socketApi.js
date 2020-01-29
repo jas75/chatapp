@@ -51,7 +51,8 @@ socketApi.io.on('connection', (socket) => {
             logger.info(`Saving message "${data.content}" in DB`);
             const message = new Message({
                 sender: data.sender_id,
-                content: data.content
+                content: data.content,
+                dateCreation: data.dateCreation
             });
             relationship.messages.push(message);
             return relationship.save();
