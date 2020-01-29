@@ -93,16 +93,21 @@ export class WebsocketService {
 
   onMessage(): Observable<any> {
     const observable = new Observable<any>(observer => {
-      if (undefined === this.socket._callbacks['$' + 'message']) {
+      if (!this.socket._callbacks['$' + 'message']) {
         this.socket.on('message', (data) => {
-            observer.next(data);
+          observer.next(data);
         });
       }
       return () => {
+        console.log("erreur socket onmessage");
         this.socket.disconnect();
       };
     });
     return observable;
+  }
+
+  logSocket() {
+    console.log(this.socket);
   }
 
 }

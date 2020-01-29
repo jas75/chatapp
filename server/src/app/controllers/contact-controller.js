@@ -250,7 +250,7 @@ exports.getRelationshipByIds = (req, res) => {
 
 // TODO test
 // get all relationships whether he is the sender or recipient
-exports.getUserRelationShips = (req, res) => {
+exports.getUserRelationShips = async (req, res) => {
   Relationship.find({ $or: [
     { sender: req.user._id },
     { recipient: req.user._id }
@@ -261,10 +261,42 @@ exports.getUserRelationShips = (req, res) => {
       return res.status(204).send();
     }
     logger.info(`Current user has ${relationships.length}  relationships`);
-    return res.status(200).json({ status: 'OK', relationships: relationships });
+  
+    let findUser = async (id) => {
+      try {
+        return await User.findById(id);
+      } catch(err) {
+        logger.error(err);
+      }
+    };
+
+    const promise = relationships.map(relationship => {
+      const id = req.user._id.toString() === relationship.sender.toString() ? relationship.recipient : relationship.sender;
+      return findUser(id).then(contact => {
+        return {relationship, contact};
+      });
+    });
+
+    Promise.all(promise).then(rooms => {
+      return res.status(200).json({ status: 'OK', rooms: rooms });
+    });
   })
   .catch(err => {
-    logger.err(err);
+    logger.error(err);
     return res.status(400).json({ status: 'Bad Request', msg: 'Something went wrong'});
   });
 };
+
+// User.findOne({ _id: req.params.id })
+//   .then(user => {
+//     if (!user) {
+//       logger.warn('No user found');
+//       return res.status(204).send();
+//     }
+//     logger.info(`Found user with id ${req.params.id}: ${user.username}`);
+//     return res.status(200).json({ status: 'OK', user: user });
+//   })
+//   .catch(err => {
+//     logger.error(err);
+//     return res.status(400).json({ status: 'Bad Request', msg: 'Something went wrong'});
+//   });

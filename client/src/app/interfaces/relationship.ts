@@ -15,12 +15,18 @@ export interface Message {
     dateCreation: Date;
 }
 
+
+export interface Room {
+    relationship: Relationship;
+    contact: User;
+}
+
 export interface RelationshipResponse {
     status: string;
     relationships: Relationship[];
 }
 
-export interface Room {
-    relationship: Relationship;
-    contact: User;
+export interface RoomResponse {
+    status: string;
+    rooms: Room[];
 }

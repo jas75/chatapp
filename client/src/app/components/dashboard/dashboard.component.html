@@ -30,19 +30,24 @@
             <div id="contacts">
                 <ul style="padding-left: 0;">
 
-                    <li *ngFor="let contact of contacts" class="contact" [ngClass]="{
-                        'active': 
-                        room && contact.contact._id === room.contact._id && selectedPage === 1
-                    }" (click)="onRoomClick(contact);">
-                        <div class="wrap">
-                            <span class="contact-status online"></span>
-                            <img src="http://emilcarlsson.se/assets/louislitt.png" alt="" />
-                            <div class="meta">
-                                <p class="name">{{ contact.contact.username }}</p>
-                                <p class="preview">{{ contact.relationship.messages.slice(-1)[0].content }}</p>
+                    <div *ngIf="contactLoaded">
+                        <li *ngFor="let contact of contacts" class="contact" [ngClass]="{
+                            'active': 
+                            room && contact.contact._id === room.contact._id && selectedPage === 1
+                        }" (click)="onRoomClick(contact);">
+                            <div class="wrap">
+                                <span class="contact-status online"></span>
+                                <img src="http://emilcarlsson.se/assets/louislitt.png" alt="" />
+                                <div class="meta">
+                                    <p class="name">{{ contact.contact.username }}</p>
+                                    <p class="preview"><small>{{ contact.relationship.messages.slice(-1)[0].dateCreation | date:'short' }}:</small> {{ contact.relationship.messages.slice(-1)[0].content }}</p>
+                                </div>
                             </div>
-                        </div>
-                    </li>
+                        </li>
+                    </div>
+                    <div *ngIf="!contactLoaded" style="text-align: center;margin-top: 100px;">
+                        <i class="fa fa-circle-o-notch fa-spin" style="font-size:50px"></i>
+                    </div>
                 </ul>
             </div>
             <div id="bottom-bar">

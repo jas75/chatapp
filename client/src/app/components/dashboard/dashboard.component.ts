@@ -27,8 +27,10 @@ export class DashboardComponent implements OnInit {
   selectedPage: number = null;
   room: Room;
   currentRoom: string;
+  contactLoaded = false;
 
   ngOnInit() {
+    this.getUserRelationships();
     // create a connection between currentUser and server
     this.wsService.join(this.currentUser._id);
     this.wsService.onNewFriendRequest().subscribe(() => {
@@ -37,7 +39,7 @@ export class DashboardComponent implements OnInit {
     this.wsService.onDenyingFriendRequest().subscribe(() => {
        this.getUserRelationships();
     });
-    this.getUserRelationships();
+    this.onMessage();
   }
 
   onRoomClick(room) {
@@ -46,13 +48,46 @@ export class DashboardComponent implements OnInit {
   }
 
   getUserRelationships() {
-    this.contacts = [];
+    // this.contacts = [];
+    // this.contactService.getUserRelationships().subscribe(res => {
+    //   res.relationships.forEach(relationship => {
+    //     const id = JSON.parse(localStorage.getItem('user'))._id === relationship.sender ? relationship.recipient : relationship.sender;
+    //     this.userService.getUserById(id).subscribe(response => {
+    //       this.contacts.push({relationship, contact: response.user});
+    //       this.contactLoaded = true;
+    //     });
+    //   });
+    // });
+
     this.contactService.getUserRelationships().subscribe(res => {
-      res.relationships.forEach(relationship => {
-        const id = JSON.parse(localStorage.getItem('user'))._id === relationship.sender ? relationship.recipient : relationship.sender;
-        this.userService.getUserById(id).subscribe(response => {
-          this.contacts.push({relationship, contact: response.user});
-        });
+      // this.contacts = res.relationships.map(relationship => {
+      //   const id = JSON.parse(localStorage.getItem('user'))._id === relationship.sender ? relationship.recipient : relationship.sender;
+      //   let arraytest = [];
+      //   this.userService.getUserById(id).subscribe(response => {
+      //     arraytest.push({relationship, contact: response.user});
+      //   });
+      //   return arraytest;
+      // });
+      console.log(res);
+      this.contacts = res.rooms;
+      this.contactLoaded = true;
+
+    });
+  }
+
+  onMessage() {
+    this.wsService.onMessage().subscribe(res => {
+      const message = {
+        _id: '',
+        sender: res.sender_id,
+        content: res.content,
+        dateCreation: new Date()
+      };
+      this.contacts = this.contacts.map(room => {
+        if (room.relationship._id === res.room_id) {
+          room.relationship.messages.push(message);
+        }
+        return room;
       });
     });
   }

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { tap, catchError } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
-import { Relationship, RelationshipResponse } from 'src/app/interfaces/relationship';
+import { Relationship, RelationshipResponse, RoomResponse } from 'src/app/interfaces/relationship';
 
 @Injectable({
   providedIn: 'root'
@@ -48,8 +48,8 @@ export class ContactService {
   }
 
   // get all user relationships including friend request to list in dashboard
-  getUserRelationships(): Observable<RelationshipResponse> {
-    return this.http.get<RelationshipResponse>(this.url + '/api/contact', this.createHttpHeaders()).pipe(tap(res => {
+  getUserRelationships(): Observable<RoomResponse> {
+    return this.http.get<RoomResponse>(this.url + '/api/contact', this.createHttpHeaders()).pipe(tap(res => {
       return res;
     }),
     catchError(err => {

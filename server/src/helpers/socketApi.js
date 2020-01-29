@@ -17,7 +17,7 @@ socketApi.io.on('connection', (socket) => {
     });
 
     // create a room 
-    socket.on('join-room', (roomid) => {     
+    socket.on('join-room', (roomid) => {
         if (socket.room) {
             // console.log("before leaving: Is client still in "+ socket.room + " (should be true)")
             // console.log(io.sockets.adapter.sids[socket.id][socket.room]);
@@ -31,14 +31,17 @@ socketApi.io.on('connection', (socket) => {
         } 
         // console.log("Before joining: is client in room " + roomid + " (should be undefined)");
         // console.log(io.sockets.adapter.sids[socket.id][roomid]);
-        socket.join(roomid, (err) => {
-            if (err) {
-                logger.error(err);
-            } else {
-                logger.info(`Socket joined room ${roomid}`);
-                socket.room = roomid;
-            }
-        });
+        // timeout to avoid to leave room after joining
+        setTimeout(() => {
+            socket.join(roomid, (err) => {
+                if (err) {
+                    logger.error(err);
+                } else {
+                    logger.info(`Socket joined room ${roomid}`);
+                    socket.room = roomid;
+                }
+            });
+        }, 200);
 
     });
 
@@ -54,11 +57,12 @@ socketApi.io.on('connection', (socket) => {
             return relationship.save();
         })
         .then(() => {
-            logger.info(`${data.sender_id} sent socket message in room: ${data.room_id}`);
-            io.sockets.in(data.room_id).emit('message', {
+            logger.info(`${data.sender_id} sent socket message to ${data.recipient_id} in room: ${data.room_id}`);
+            io.in(data.room_id).in(data.recipient_id).emit('message', {
                 debug: socket.nsp.name,
                 sender_id: data.sender_id,
-                content: data.content
+                content: data.content,
+                room_id: data.room_id
             });
         })
         .catch(err => logger.error(err));

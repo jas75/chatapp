@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Relationship, Room } from 'src/app/interfaces/relationship';
 import { User } from 'src/app/interfaces/identity';
 import { ContactService } from 'src/app/services/contact/contact.service';
@@ -10,10 +10,11 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css', './../dashboard/dashboard.component.css']
 })
-export class ChatComponent implements OnChanges {
+export class ChatComponent implements OnChanges, AfterViewInit {
 
   @Input() room: Room;
   @Output() decision: EventEmitter<any> = new EventEmitter();
+  @ViewChild('chatbox', { static: false}) chatbox: ElementRef;
 
   currentUser: User = JSON.parse(localStorage.getItem('user'));
   isTyping = false;
@@ -27,12 +28,17 @@ export class ChatComponent implements OnChanges {
   ) {}
 
   ngOnChanges() {
+    console.log(`Room ${this.room.relationship._id}`);
     this.createForm();
     this.initIoConnection();
-    console.log(`Room ${this.room.relationship._id}`);
     this.isFriendRequest = false;
     this.isTyping = false;
     this.showFriendRequest();
+
+  }
+  ngAfterViewInit() {
+    // scroll at bottom
+    this.chatbox.nativeElement.scrollTop = this.chatbox.nativeElement.scrollHeight;
   }
 
   // SOCKET.IO
@@ -54,7 +60,7 @@ export class ChatComponent implements OnChanges {
 
   onMessage() {
     this.wsService.onMessage().subscribe(res => {
-
+      console.log(res);
       const message = {
         _id: '',
         sender: res.sender_id,
@@ -116,11 +122,24 @@ export class ChatComponent implements OnChanges {
       const newMessage = {
         room_id: this.room.relationship._id,
         sender_id: this.currentUser._id,
+        recipient_id: this.room.contact._id,
         content: this.chatForm.controls.text.value
       };
 
       this.wsService.sendMessage(newMessage);
       this.chatForm.reset();
+      // console.log("before");
+      // console.log("scrolltop")
+      // console.log(this.chatbox.nativeElement.scrollTop)
+      // console.log('scroll height');
+      // console.log(this.chatbox.nativeElement.scrollHeight)
+      // this.chatbox.nativeElement.scrollTop = this.chatbox.nativeElement.scrollHeight;
+      // console.log("after");
+      // console.log("scrolltop")
+      // console.log(this.chatbox.nativeElement.scrollTop)
+      // console.log('scroll height');
+      // console.log(this.chatbox.nativeElement.scrollHeight)
+      // console.log(this.chatbox)
     }
   }
 
