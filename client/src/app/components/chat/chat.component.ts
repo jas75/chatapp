@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, OnDestroy, ViewChild, ElementRef, AfterViewInit, AfterViewChecked } from '@angular/core';
 import { Relationship, Room } from 'src/app/interfaces/relationship';
 import { User } from 'src/app/interfaces/identity';
 import { ContactService } from 'src/app/services/contact/contact.service';
@@ -10,7 +10,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css', './../dashboard/dashboard.component.css']
 })
-export class ChatComponent implements OnChanges, AfterViewInit {
+export class ChatComponent implements OnChanges, AfterViewChecked {
 
   @Input() room: Room;
   @Output() decision: EventEmitter<any> = new EventEmitter();
@@ -36,7 +36,7 @@ export class ChatComponent implements OnChanges, AfterViewInit {
     this.showFriendRequest();
 
   }
-  ngAfterViewInit() {
+  ngAfterViewChecked() {
     // scroll at bottom
     this.chatbox.nativeElement.scrollTop = this.chatbox.nativeElement.scrollHeight;
   }
@@ -129,18 +129,7 @@ export class ChatComponent implements OnChanges, AfterViewInit {
 
       this.wsService.sendMessage(newMessage);
       this.chatForm.reset();
-      // console.log("before");
-      // console.log("scrolltop")
-      // console.log(this.chatbox.nativeElement.scrollTop)
-      // console.log('scroll height');
-      // console.log(this.chatbox.nativeElement.scrollHeight)
-      // this.chatbox.nativeElement.scrollTop = this.chatbox.nativeElement.scrollHeight;
-      // console.log("after");
-      // console.log("scrolltop")
-      // console.log(this.chatbox.nativeElement.scrollTop)
-      // console.log('scroll height');
-      // console.log(this.chatbox.nativeElement.scrollHeight)
-      // console.log(this.chatbox)
+      this.chatbox.nativeElement.scrollTop = this.chatbox.nativeElement.scrollHeight;
     }
   }
 
