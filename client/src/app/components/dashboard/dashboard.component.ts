@@ -48,6 +48,9 @@ export class DashboardComponent implements OnInit {
   }
 
   getUserRelationships() {
+    // new Date(Math.max.apply(null, res.rooms.map(function(e) {
+    //   return new Date(e.MeasureDate);
+    // })));
     this.contactService.getUserRelationships().subscribe(res => {
       this.contacts = res.rooms;
       this.contactLoaded = true;
